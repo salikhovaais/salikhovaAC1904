@@ -16,12 +16,20 @@ struct KC
 	int rabzeh;
 	string effect;
 };
+int createpipe(string name) {
+	Pipeline x;
+	cout << "введите длину  трубы\n";
+	cin >> x.dlina ;
+	cout << "введите диаметр трубы\n";
+	cin >> x.diametr;
+	return x;
+}
 int main()
 {
-	cout << "Hello World!\n";
-	cout << "enter a=";
-	int a;
-	cin >> a;
-	return 0;
-
+	setlocale;
+		Pipeline pipe1;
+		pipe1.ident = "1a";
+		cout << pipe1.ident;
+		createpipe(pipe1);
+		return 0;
 }
