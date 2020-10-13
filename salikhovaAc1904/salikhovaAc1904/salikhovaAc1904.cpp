@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include <fstream>
 using namespace std;
 struct Pipeline
 {
@@ -16,20 +17,32 @@ struct KC
 	int rabzeh;
 	string effect;
 };
-int createpipe(string name) {
+Pipeline createpipe(string name) {
 	Pipeline x;
+	ifstream fin;
+	fin.open("pipe.txt", 'r');
+
 	cout << "введите длину  трубы\n";
 	cin >> x.dlina ;
 	cout << "введите диаметр трубы\n";
 	cin >> x.diametr;
-	return x;
+	
+}
+
+void savepipe(Pipeline& x)  
+{
+	ofstream fout;
+	fout.open("data.txt" );
+	fout << "dlina" << x.dlina
+		<< "\tdiametr" << x.diametr
+		<< "\tident" << x.ident;
 }
 int main()
 {
-	setlocale;
-		Pipeline pipe1;
-		pipe1.ident = "1a";
-		cout << pipe1.ident;
-		createpipe(pipe1);
-		return 0;
+	
+	Pipeline pipe1;
+	createpipe(pipe1);
+	savepipe(pipe1);
+	return 0;
 }
+
