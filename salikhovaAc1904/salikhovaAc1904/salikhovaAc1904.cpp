@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include <fstream>
 
 using namespace std;
 struct Pipeline
@@ -16,51 +17,54 @@ struct KC
 	int workzeh;
 	string eff;
 };
-Pipeline createPipeline()            //создание трубы
+Pipeline LoadPipeline()            //создание трубы
 {
+	ifstream fin;
+	fin.open("data.txt", ios::in);
 	Pipeline x;
-	//ifstream fin;
-	//fin.open("pipe.txt", 'r');
-
-	cout << "введите длину  трубы";
-	cin >> x.length ;
-	cout << "введите диаметр трубы";
-	cin >> x.diametr;
 	x.ident = 0;
 	x.remont = false;
+	//cout << "type length\n";
+	fin >> x.length ;
+	//cout << "type diametr\n";
+	fin >> x.diametr;
+	fin.close();
 	return x;
 	
 }
 KC createkc()   //создание компрессорной станции
 {
 	KC y;
-	cout << "введите название компрессорной станции \n"; //????
+	cout << "type name kc \n"; //????
 	cin >> y.name;
 
 
-	cout << "введите общее количество цехов \n";
+	cout << " type number of zeh \n";
 	cin >> y.zeh;
-	cout << "введите количество цехов в работе\n";
+	cout << "type number of working zeh\n";
 	cin >> y.workzeh;
 	y.eff = (y.zeh / y.workzeh) * 100;
 
 	return y;
 }
-
-////void savepipe(Pipeline& x)  
+void SavePipeline (const Pipeline& x)
+{
+	ofstream fout;
+	fout.open("data.txt", ios::out );
+	fout << x.length << endl
+		/*<< "\tDiametr:" */ << x.diametr << endl;
+	fout.close();
+}
+//EditPipeline(Pipeline& x)
 //{
-//	ofstream fout;
-//	fout.open("data.txt" );
-//	fout << "length" << x.length
-//		<< "\tdiametr" << x.diametr
-//		<< "\tident" << x.ident;
-
+//}
 int main()
 {
 	
-	Pipeline pipe1 = createPipeline();
-	
-	
+	Pipeline pipe1 = LoadPipeline();
+	KC kc1 = createkc();
+	/*EditPipeline(pipe1);*/
+	SavePipeline(pipe1);
 	return 0;
 }
 
