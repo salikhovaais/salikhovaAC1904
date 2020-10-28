@@ -18,43 +18,65 @@ struct KC
 	int workzeh; // кол-во работающих цехов
 	string eff;//эффективность 
 };
-Pipeline LoadPipeline()            //загрузка в файл  трубы
+
+ 
+bool isNumber(char Symbol)           //проверка цифра или нет , взято из https://pyatnitsev.ru/2011/11/21/isnumber/
 {
-	ifstream fin;
-	fin.open("data.txt", ios::in);
-	/*if (fin.is_open())*/
-	
-		Pipeline x;
-		x.ident = 0;
-		fin >> x.remont;
-		//cout << "type length\n";
-		fin >> x.length;
-		//cout << "type diametr\n";
-		fin >> x.diametr;
-		fin.close();
-		return x;
-	
-}
-void PrintPipe(const Pipeline& x)
+		if (Symbol >= '0' && Symbol <= '9')
+				return true;
+			return false;
+		}
+
+
+
+//T Getcorrectsymb(T x)
+//
+//{
+//	T x;
+//	while ((cin >> x).fail() || isNumber(x))
+//	{
+//		cin.clear();
+//		cin.ignore(1000, '\n');
+//		cout << "type a numeric value: ";
+//	} return x;
+//}
+
+template <typename T>
+T Getcorrectnumber(T min, T max)//проверка на введение нужной цифры в меню
 {
-	cout << "identification:" << x.ident << endl
-		<< "length:" << x.length << endl
-		<< "diametr:" << x.diametr << endl
-		<< "remont:" << x.remont << endl;
+	int x;
+	while ((cin >> x).fail() || x<min || x> max)
+	{
+		cin.clear();
+		cin.ignore(1000, '\n');
+		cout << "Type number (" << min << "-" << max << "):";
 
-
+	}
+	return x;
 }
-
 
 Pipeline inputPipeline()            //создание трубы
 {
 		Pipeline x;
 		x.ident = 0;
 		x.remont = false;
-		cout << "type the length (2000-8000)\n";
-		cin >> x.length;
-		cout << "type the diametr(60-140)\n";
-		cin >> x.diametr;
+		cout << "type the length (m)\n";
+
+		do
+		{
+			cin.clear();
+			cin.ignore(1000, '\n');
+			cout << "type a numeric value: ";
+			cin >> x.length;
+		} while (cin.fail() || isNumber(x.length));
+		cout << "type the diameter (mm) \n";
+		do
+		{
+			cin.clear();
+			cin.ignore(1000, '\n');
+			cout << "type a numeric value: ";
+			cin>> x.diametr;
+		} while (cin.fail() || isNumber(x.diametr));
 		/*do 
 		{
 			cin.clear();
@@ -64,83 +86,265 @@ Pipeline inputPipeline()            //создание трубы
 		}while (cin.fail()|| x.diametr < 60 || x.diametr > 140);*/
 		return x;
 	}
-//bool IsDcorrect(double d)
-//{
-//	return d >= 60 && d <= 140;
-//}
+
 
 KC inputkc()   //создание компрессорной станции
 {
 	KC y;
-	cout << "type name kc \n"; //????
+	y.ident = 0;
+
+	cout << "type name kc \n"; 
 	cin >> y.name;
 
 
+
 	cout << " type number of zeh \n";
-	cin >> y.zeh;
+	do
+	{
+		cin.clear();
+		cin.ignore(1000, '\n');
+		cout << "Type a numeric value: ";
+		cin >> y.zeh;
+	} while (cin.fail() || isNumber(y.zeh)); 
+	
 	cout << "type number of working zeh\n";
-	cin >> y.workzeh;
+	do
+	{
+		cin.clear();
+		cin.ignore(1000, '\n');
+		cout << "Type a numeric value: ";
+		cin >> y.workzeh;
+	} while (cin.fail() || isNumber(y.workzeh));
+	/*cout << "type efficiency  of working zeh (1-10)\n";
+	do
+	{
+		cin.clear();
+		cin.ignore(1000, '\n');
+		cout << "Type a numeric value: ";
+		cin >> y.eff;
+	} while (cin.fail() || isNumber(y.eff));*/
 	y.eff = (y.zeh / y.workzeh) * 100;
 
 	return y;
 }
+
+
+ Pipeline LoadPipeline()            //загрузка в файл  трубы  
+{
+	ifstream fin;
+	fin.open("data.txt", ios::in);
+	/*if (fin.is_open())*/
+
+	Pipeline x;
+	x.ident = 0;
+	fin >> x.remont;
+	fin >> x.length;
+	fin >> x.diametr;
+	fin.close();
+	return x;
+}
+	
+	
+
+KC LoadKC()            //загрузка в файл  KC
+{
+	ifstream fin;
+	fin.open("KC.txt", ios::in);
+	/*if (fin.is_open())*/
+
+	KC y;
+	y.ident = 0;
+	fin >> y.name ;
+	fin >> y.zeh;
+	fin >> y.workzeh;
+	fin >> y.eff;
+	fin.close();
+
+	return y;
+
+}
+	
+
+
+
+void PrintAll(const Pipeline & x, const KC & y)
+	{
+	cout << "\tPipe identification:" << x.ident << endl << "length:" << x.length << endl << "diametr:" << x.diametr << endl
+			<< "remont:" << x.remont << endl
+			<< "\tKC name:" << y.name << endl << "identification:" << y.ident << endl
+			<< "number of workshops:" << y.zeh << endl << "number of operating workshops:" << y.workzeh << endl
+			<< "efficiency:" << y.eff << endl;
+	}
+
+
+
+
+
 void SavePipeline(const Pipeline& x)
 {
 	ofstream fout;
-	fout.open("data.txt", ios::out );
+	fout.open("pipe.txt", ios::out );
 	if (fout.is_open())
 	{
 		fout << x.length << endl
-			/*<< "\tDiametr:" */
 			<< x.diametr << endl
 			<< x.ident << endl
 			<< x.remont << endl;
 		fout.close();
 	}
 }
-void EditPipeline(Pipeline& x)
+
+void SaveKC(const KC& y)
 {
-	x.diametr -= 1;
-	/*x.diametr = IsDcorrect(x.diametr) ? x.diametr : 60;*/
+	ofstream fout;
+	fout.open("KC.txt", ios::out);
+	if (fout.is_open())
+	{
+		fout << y.ident << endl
+			<< y.name << endl
+			<< y.zeh << endl
+			<< y.workzeh << endl
+			<< y.eff << endl;
+		fout.close();
+	}
 }
+void Saveall(const Pipeline& x, const KC& y)
+{
+	ofstream fout;
+	fout.open("ALL.txt", ios::out);
+	if (fout.is_open())
+	{
+		fout << "Pipeline:"<< endl
+			<< x.ident << endl 
+			<< x.length << endl
+			<< x.diametr << endl
+			<< x.remont << endl
+		     << "KC:" << endl
+			<< y.ident << endl
+			<< y.name << endl
+			<< y.zeh << endl
+			<< y.workzeh << endl
+			<< y.eff << endl;
+		fout.close();
+	}
+}
+void Save(int f,const Pipeline& p,const KC& kc)
+{
+	switch (f)
+	{
+	case 1:
+		SavePipeline(p);
+		break;
+	case 2:
+		SaveKC(kc);
+		break;
+	case 3:
+		Saveall(p, kc);
+		break;
+	}
+}
+KC  EditKC(KC& y)
+{
+	cout << "press 1 to add the operating workshop";
+	cout << "\npress 2 to remove the operating workshop  ";
+	int  k;
+	cin >> k;
+	if (k==1)
+	{
+		y.workzeh += 1;
+	}
+	else
+	{
+		y.workzeh -= 1;
+	}
+	return y;
+}
+
+void Editpipeline(Pipeline& x)
+{
+	if (x.remont == 1) {
+		x.remont = 0;
+		cout << "\nnow the pipeline is not in repair\n";
+	}
+	else {
+		x.remont = 1;
+		cout << "\nnow the pipeline is  in repair\n";
+	}
+}
+
 void PrintMenu()
 {
 	cout << "1. input pipeline" << endl
-		<< "2. print pipeline" << endl
-		<< "3. save to file" << endl
-		<< "4. load from file" << endl
-		<< "5. edit pipeline" << endl
+		<< "2. input KC" << endl
+		<< "3. view all " << endl
+		
+		<< "4. edit pipeline" << endl
+		<< "5. edit KC" << endl
+
+		<< "6. save to file" << endl
+		<< "7. load from file" << endl
 		<< "0. exit" << endl;
 
 }
+//void operator >> (istream& in, Pipeline& p1)
+//{
+//	cout << "type name:";
+//	in >> p1.diametr;
+//	do {
+//		cin.clear();
+//		cin.ignore(1000, '\n');
+//		cout << "Type diametr (60-140):";
+//		cin >> p1;
+//	} while (cin.fail() );
+//}
 int main()
 {
-	Pipeline p1;
+Pipeline p1; 
+KC k;
+
+
+	
 	while (1)
 	{
 		PrintMenu();
-		int i = 0;
-		cin >> i;
-		switch (i)
+		
+		switch (Getcorrectnumber(0, 6))
 		{
 		case 1:
 		{
 			p1 = inputPipeline();
 			break;
 		}
-		case 3:
+		case 2:
 		{
-			SavePipeline(p1);
+			k = inputkc();
 			break;
 		}
-		case 4:
+		case 3:
 		{
-			p1 = LoadPipeline();
+			PrintAll(p1, k);
+			break;
+		}
+	     case 4:
+		{
+			Editpipeline(p1);
 			break;
 		}
 		case 5:
 		{
-			EditPipeline(p1);
+			EditKC(k);
+			break;
+		}
+		case 6:
+		{cout << "choose what to save 1.pipeline \t2.kc  \t3.all";
+			int a;
+			cin >> a;
+			Save(a,p1, k);
+			break;
+		}
+		case 7:
+		{
+			LoadPipeline();
 			break;
 		}
 		case 0:
@@ -152,11 +356,15 @@ int main()
 		{cout << "wrong action" << endl; }
 		}
 	}
-	/*Pipeline p1 = LoadPipeline();*/
-	KC kc1 = inputkc();
-	SavePipeline(p1);
+	 LoadPipeline();
+	
+	/*SavePipeline(p1);*/
+	 k = inputkc();
+ p1 = inputPipeline();
 	PrintMenu();
-	EditPipeline(p1);
+	/*EditPipeline(p1);*/
+	EditKC(k);
+
 	return 0;
 }
 
