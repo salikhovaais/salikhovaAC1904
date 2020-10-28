@@ -15,7 +15,7 @@ struct KC
 	int ident;
 	string name;
 	int zeh; // кол-во цехов
-	int workzeh; // кол-во работающих цехов
+	int workzeh; // кол-во работающих цех
 	int eff;//эффективность 
 };
 
