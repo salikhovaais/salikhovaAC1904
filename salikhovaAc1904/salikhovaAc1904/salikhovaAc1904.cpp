@@ -65,13 +65,7 @@ Pipeline inputPipeline()            //создание трубы
 			cout << "type a numeric value: ";
 			cin>> x.diametr;
 		} while (cin.fail() || isNumber(x.diametr));
-		/*do 
-		{
-			cin.clear();
-			cin.ignore(10000, '/n');
-			cout << "type diametr(60-140)\n";
-			cin >> x.diametr;
-		}while (cin.fail()|| x.diametr < 60 || x.diametr > 140);*/
+	
 		return x;
 	}
 
@@ -273,17 +267,7 @@ void PrintMenu()
 		<< "0. exit" << endl;
 
 }
-//void operator >> (istream& in, Pipeline& p1)
-//{
-//	cout << "type name:";
-//	in >> p1.diametr;
-//	do {
-//		cin.clear();
-//		cin.ignore(1000, '\n');
-//		cout << "Type diametr (60-140):";
-//		cin >> p1;
-//	} while (cin.fail() );
-//}
+
 int main()
 {
 Pipeline p1; 
@@ -325,7 +309,7 @@ KC k;
 		case 6:
 		{cout << "choose what to save 1.pipeline \t2.kc  \t3.all";
 			int a;
-			cin >> a;
+			a = Getcorrectnumber(1, 3);
 			Save(a,p1, k);
 			break;
 		}
@@ -343,15 +327,7 @@ KC k;
 		{cout << "wrong action" << endl; }
 		}
 	}
-	 LoadPipeline();
 	
-	/*SavePipeline(p1);*/
-	 k = inputkc();
- p1 = inputPipeline();
-	PrintMenu();
-	/*EditPipeline(p1);*/
-	EditKC(k);
-
 	return 0;
 }
 
