@@ -16,7 +16,7 @@ struct KC
 	string name;
 	int zeh; // кол-во цехов
 	int workzeh; // кол-во работающих цехов
-	string eff;//эффективность 
+	int eff;//эффективность 
 };
 
  
@@ -29,20 +29,8 @@ bool isNumber(char Symbol)           //проверка цифра или нет
 
 
 
-//T Getcorrectsymb(T x)
-//
-//{
-//	T x;
-//	while ((cin >> x).fail() || isNumber(x))
-//	{
-//		cin.clear();
-//		cin.ignore(1000, '\n');
-//		cout << "type a numeric value: ";
-//	} return x;
-//}
-
 template <typename T>
-T Getcorrectnumber(T min, T max)//проверка на введение нужной цифры в меню
+T Getcorrectnumber(T min, T max)//проверка на введение нужной цифры 
 {
 	int x;
 	while ((cin >> x).fail() || x<min || x> max)
@@ -113,17 +101,16 @@ KC inputkc()   //создание компрессорной станции
 		cin.clear();
 		cin.ignore(1000, '\n');
 		cout << "Type a numeric value: ";
-		cin >> y.workzeh;
-	} while (cin.fail() || isNumber(y.workzeh));
-	/*cout << "type efficiency  of working zeh (1-10)\n";
+		y.workzeh = (Getcorrectnumber(1, y.zeh));
+	} while (cin.fail() || isNumber(y.workzeh)); 
+	cout << "type efficiency  of working zeh (1-10)\n";
 	do
 	{
 		cin.clear();
 		cin.ignore(1000, '\n');
 		cout << "Type a numeric value: ";
-		cin >> y.eff;
-	} while (cin.fail() || isNumber(y.eff));*/
-	y.eff = (y.zeh / y.workzeh) * 100;
+		y.eff= (Getcorrectnumber(1,10));
+	} while (cin.fail() || isNumber(y.eff));
 
 	return y;
 }
@@ -308,7 +295,7 @@ KC k;
 	{
 		PrintMenu();
 		
-		switch (Getcorrectnumber(0, 6))
+		switch (Getcorrectnumber(0, 7))
 		{
 		case 1:
 		{
