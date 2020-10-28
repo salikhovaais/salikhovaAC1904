@@ -104,34 +104,39 @@ KC inputkc()   //создание компрессорной станции пр
 }
 
 
-void LoadPipelineKC()            //загрузка  файл   
+Pipeline LoadPipeline()            //загрузка из файла   
 {
 	ifstream fin;
-	fin.open("data.txt", ios::in);
+	fin.open("Pipeline.txt", ios::in);
 	if (fin.is_open())
 	{
-
 		Pipeline x;
 		x.ident = 0;
 		fin >> x.remont;
 		fin >> x.length;
 		fin >> x.diametr;
+		fin.close();
+		return x;
+	}
+	
+}
+KC LoadKC()
+{
+	ifstream fin;
+	fin.open("KC.txt", ios::in);
+	if (fin.is_open())
+	{
 		KC y;
 		y.ident = 0;
 		fin >> y.name;
 		fin >> y.zeh;
 		fin >> y.workzeh;
 		fin >> y.eff;
-
 		fin.close();
-		
-		
+		return y;
 	}
+
 }
-
-	
-
-
 
 void PrintAll(const Pipeline & x, const KC & y) // показать все
 	{
@@ -214,7 +219,8 @@ void Save(const Pipeline& p,const KC& kc)
 	}
 }
 KC  EditKC(KC& y)
-{
+
+{   
 	cout << "press 1 to add the operating workshop";
 	cout << "\npress 2 to remove the operating workshop  ";
 	int  k;
@@ -303,11 +309,11 @@ KC k;
 			Save(p,k);
 			break;
 		}
-		/*case 7:
+		case 7:
 		{
-			PrintAll(LoadPipelineKC());
+			PrintAll(LoadPipeline(), LoadKC());
 			break;
-		}*/
+		}
 		case 0:
 		{
 			return 0;
