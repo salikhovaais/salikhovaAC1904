@@ -5,8 +5,8 @@
 using namespace std;
 struct Pipeline
 {
-	float length;
-	float diametr;
+	double length;
+	double diametr;
 	bool remont;
 	int ident;
 };
@@ -16,18 +16,18 @@ struct KC
 	string name;
 	int zeh; // кол-во цехов
 	int workzeh; // кол-во работающих цех
-	int eff;//эффективность 
+	double eff;//эффективность 
 };
 
  
-bool isNumber(char Symbol)           //проверка цифра или нет , взято из https://pyatnitsev.ru/2011/11/21/isnumber/
+bool isNumber(char Symbol)           //проверка цифра или нет 
 {
 		if (Symbol >= '0' && Symbol <= '9')
 				return true;
 			return false;
 		}
 
-
+ 
 
 template <typename T>
 T Getcorrectnumber(T min, T max)//проверка на введение нужной цифры 
@@ -38,7 +38,6 @@ T Getcorrectnumber(T min, T max)//проверка на введение нуж�
 		cin.clear();
 		cin.ignore(1000, '\n');
 		cout << "Type number (" << min << "-" << max << "):";
-
 	}
 	return x;
 }
@@ -70,34 +69,30 @@ Pipeline inputPipeline()            //создание трубы
 	}
 
 
-KC inputkc()   //создание компрессорной станции
+KC inputkc()   //создание компрессорной станции пробел
 {
 	KC y;
 	y.ident = 0;
-
 	cout << "type name kc \n"; 
 	cin >> y.name;
-
-
-
-	cout << " type number of zeh \n";
+	cout << " type number of workshop \n";
 	do
 	{
 		cin.clear();
 		cin.ignore(1000, '\n');
 		cout << "Type a numeric value: ";
-		cin >> y.zeh;
-	} while (cin.fail() || isNumber(y.zeh)); 
+		cin >> y.zeh ;
+	} while (cin.fail()|| isNumber(y.zeh ));
 	
-	cout << "type number of working zeh\n";
+	cout << "type number of working workshops\n";
 	do
 	{
 		cin.clear();
 		cin.ignore(1000, '\n');
 		cout << "Type a numeric value: ";
 		y.workzeh = (Getcorrectnumber(1, y.zeh));
-	} while (cin.fail() || isNumber(y.workzeh)); 
-	cout << "type efficiency  of working zeh (1-10)\n";
+	} while (cin.fail() || isNumber(y.workzeh));
+	cout << "type efficiency  of  workshops (1-10)\n";
 	do
 	{
 		cin.clear();
@@ -105,55 +100,45 @@ KC inputkc()   //создание компрессорной станции
 		cout << "Type a numeric value: ";
 		y.eff= (Getcorrectnumber(1,10));
 	} while (cin.fail() || isNumber(y.eff));
-
 	return y;
 }
 
 
- Pipeline LoadPipeline()            //загрузка в файл  трубы  
+void LoadPipelineKC()            //загрузка  файл   
 {
 	ifstream fin;
 	fin.open("data.txt", ios::in);
-	/*if (fin.is_open())*/
+	if (fin.is_open())
+	{
 
-	Pipeline x;
-	x.ident = 0;
-	fin >> x.remont;
-	fin >> x.length;
-	fin >> x.diametr;
-	fin.close();
-	return x;
+		Pipeline x;
+		x.ident = 0;
+		fin >> x.remont;
+		fin >> x.length;
+		fin >> x.diametr;
+		KC y;
+		y.ident = 0;
+		fin >> y.name;
+		fin >> y.zeh;
+		fin >> y.workzeh;
+		fin >> y.eff;
+
+		fin.close();
+		
+		
+	}
 }
-	
-	
 
-KC LoadKC()            //загрузка в файл  KC
-{
-	ifstream fin;
-	fin.open("KC.txt", ios::in);
-	/*if (fin.is_open())*/
-
-	KC y;
-	y.ident = 0;
-	fin >> y.name ;
-	fin >> y.zeh;
-	fin >> y.workzeh;
-	fin >> y.eff;
-	fin.close();
-
-	return y;
-
-}
 	
 
 
 
-void PrintAll(const Pipeline & x, const KC & y)
+void PrintAll(const Pipeline & x, const KC & y) // показать все
 	{
 	cout << "\tPipe identification:" << x.ident << endl << "length:" << x.length << endl << "diametr:" << x.diametr << endl
 			<< "remont:" << x.remont << endl
 			<< "\tKC name:" << y.name << endl << "identification:" << y.ident << endl
-			<< "number of workshops:" << y.zeh << endl << "number of operating workshops:" << y.workzeh << endl
+			<< "number of workshop:" << y.zeh << endl << "number of operating workshops:" << y.workzeh << endl
 			<< "efficiency:" << y.eff << endl;
 	}
 
@@ -161,7 +146,7 @@ void PrintAll(const Pipeline & x, const KC & y)
 
 
 
-void SavePipeline(const Pipeline& x)
+void SavePipeline(const Pipeline& x) // сохр в файл трубу
 {
 	ofstream fout;
 	fout.open("pipe.txt", ios::out );
@@ -209,10 +194,14 @@ void Saveall(const Pipeline& x, const KC& y)
 		fout.close();
 	}
 }
-void Save(int f,const Pipeline& p,const KC& kc)
+void Save(const Pipeline& p,const KC& kc)
 {
-	switch (f)
+	cout << "choose what to save 1.pipeline \t2.kc  \t3.all";
+	int a;
+	a = Getcorrectnumber(1, 3);
+	switch (a)
 	{
+		
 	case 1:
 		SavePipeline(p);
 		break;
@@ -229,7 +218,7 @@ KC  EditKC(KC& y)
 	cout << "press 1 to add the operating workshop";
 	cout << "\npress 2 to remove the operating workshop  ";
 	int  k;
-	cin >> k;
+	k= Getcorrectnumber(1,2);
 	if (k==1)
 	{
 		y.workzeh += 1;
@@ -264,13 +253,14 @@ void PrintMenu()
 
 		<< "6. save to file" << endl
 		<< "7. load from file" << endl
-		<< "0. exit" << endl;
+		<< "0. exit" << endl
+		<< "choose action" << endl;
 
 }
 
 int main()
 {
-Pipeline p1; 
+Pipeline p; 
 KC k;
 
 
@@ -283,7 +273,7 @@ KC k;
 		{
 		case 1:
 		{
-			p1 = inputPipeline();
+			p = inputPipeline();
 			break;
 		}
 		case 2:
@@ -293,12 +283,12 @@ KC k;
 		}
 		case 3:
 		{
-			PrintAll(p1, k);
+			PrintAll(p, k);
 			break;
 		}
 	     case 4:
 		{
-			Editpipeline(p1);
+			Editpipeline(p);
 			break;
 		}
 		case 5:
@@ -310,14 +300,14 @@ KC k;
 		{cout << "choose what to save 1.pipeline \t2.kc  \t3.all";
 			int a;
 			a = Getcorrectnumber(1, 3);
-			Save(a,p1, k);
+			Save(p,k);
 			break;
 		}
-		case 7:
+		/*case 7:
 		{
-			LoadPipeline();
+			PrintAll(LoadPipelineKC());
 			break;
-		}
+		}*/
 		case 0:
 		{
 			return 0;
