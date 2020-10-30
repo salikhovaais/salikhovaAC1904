@@ -9,6 +9,7 @@ struct Pipeline
 	double diametr;
 	bool remont;
 	int ident;
+	bool haveP;
 };
 struct KC
 {
@@ -17,6 +18,7 @@ struct KC
 	int zeh; // кол-во цехов
 	int workzeh; // кол-во работающих цех
 	double eff;//эффективность 
+	bool haveKC;
 };
 
  
@@ -42,11 +44,14 @@ T Getcorrectnumber(T min, T max)//проверка на введение нуж�
 	return x;
 }
 
+
+
 Pipeline inputPipeline()            //создание трубы
 {
 		Pipeline x;
 		x.ident = 0;
 		x.remont = false;
+		x.haveP = true;
 		cout << "type the length (m)\n";
 
 		do
@@ -73,6 +78,7 @@ KC inputkc()   //создание компрессорной станции пр
 {
 	KC y;
 	y.ident = 0;
+	y.haveKC = true;
 	cout << "type name kc \n"; 
 	cin >> y.name;
 	cout << " type number of workshop \n";
@@ -135,6 +141,7 @@ KC LoadKC()
 		fin.close();
 		return y;
 	}
+	else { cout << "file not founded"; }
 
 }
 
@@ -146,10 +153,18 @@ void PrintAll(const Pipeline & x, const KC & y) // показать все
 			<< "number of workshop:" << y.zeh << endl << "number of operating workshops:" << y.workzeh << endl
 			<< "efficiency:" << y.eff << endl;
 	}
+void PrintPipeline (const Pipeline & x) // показать p
+	{
+	cout << "\tPipe identification:" << x.ident << endl << "length:" << x.length << endl << "diametr:" << x.diametr << endl
+			<< "remont:" << x.remont << endl;
+	}
 
 
-
-
+void PrintKC  (const KC& y)
+{cout << "\tKC name:" << y.name << endl << "identification:" << y.ident << endl
+<< "number of workshop:" << y.zeh << endl << "number of operating workshops:" << y.workzeh << endl
+<< "efficiency:" << y.eff << endl;
+}
 
 void SavePipeline(const Pipeline& x) // сохр в файл трубу
 {
@@ -239,12 +254,11 @@ KC  EditKC(KC& y)
 void Editpipeline(Pipeline& x)
 {
 	if (x.remont == 1) {
-		x.remont = 0;
-		cout << "\nnow the pipeline is not in repair\n";
+		cout << "\nnow the pipeline is  in repair\n";
 	}
 	else {
-		x.remont = 1;
-		cout << "\nnow the pipeline is  in repair\n";
+		x.remont = 0;
+		cout << "\nnow the pipeline is  not in repair\n";
 	}
 }
 
@@ -266,64 +280,97 @@ void PrintMenu()
 
 int main()
 {
-Pipeline p; 
-KC k;
+	Pipeline p;
+	KC k;
 
+	bool haveP = 0;
+	bool haveKC = 0;
 
-	
 	while (1)
 	{
 		PrintMenu();
-		
+
 		switch (Getcorrectnumber(0, 7))
 		{
 		case 1:
 		{
 			p = inputPipeline();
+			haveP = true;
 			break;
 		}
 		case 2:
 		{
 			k = inputkc();
+			haveKC = true;
 			break;
 		}
 		case 3:
+		{  if (haveP == true && haveKC == true)
 		{
-			PrintAll(p, k);
-			break;
+			cout << "choose what to show  1.pipeline \t2.kc  \t3.all";
+			int a;
+			a = Getcorrectnumber(1, 3);
+			switch (a)
+			{
+
+			case 1:
+				PrintPipeline(p);
+				break;
+			case 2:
+				PrintKC(k);
+				break;
+			case 3:
+				PrintAll(p, k);
+				break;
+			}
 		}
-	     case 4:
-		{
+		else { cout << "there are not data, please enter them in action 1 and 2"; }
+
+		}
+
+
+		case 4:
+		{ if (haveP == true && haveKC == true) {
 			Editpipeline(p);
 			break;
 		}
+		else { cout << "there are not data, please enter them in action 1 and 2"; }
+		}
 		case 5:
-		{
+		{if (haveP == true && haveKC == true) {
 			EditKC(k);
 			break;
 		}
+		else { cout << "there are not data, please enter them in action 1 and 2"; }
+
+		}
 		case 6:
-		{cout << "choose what to save 1.pipeline \t2.kc  \t3.all";
+		{if (haveP == true && haveKC == true) {
+			cout << "choose what to save 1.pipeline \t2.kc  \t3.all";
 			int a;
 			a = Getcorrectnumber(1, 3);
-			Save(p,k);
+			Save(p, k);
 			break;
 		}
+		else { cout << "there are not data, please enter them in action 1 and 2"; }
+		}
 		case 7:
-		{
+		{if (haveP == true && haveKC == true) {
 			PrintAll(LoadPipeline(), LoadKC());
 			break;
 		}
+		else { cout << "there are not data, please enter them in action 1 and 2"; }
 		case 0:
 		{
 			return 0;
-			
+
 		}
-		default	:
+		default:
 		{cout << "wrong action" << endl; }
 		}
+		}
+
+		return 0;
 	}
-	
-	return 0;
 }
 
