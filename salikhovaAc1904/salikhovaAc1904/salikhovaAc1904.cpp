@@ -79,7 +79,8 @@ KC inputkc()   //создание компрессорной станции пр
 	KC y;
 	y.ident = 0;
 	y.haveKC = true;
-	cout << "type name kc \n"; 
+	cout << "type name kc \n";
+	getline(cin, y.name); 
 	cin >> y.name;
 	cout << " type number of workshop \n";
 	do
@@ -355,11 +356,10 @@ int main()
 		else { cout << "there are not data, please enter them in action 1 and 2"; }
 		}
 		case 7:
-		{if (haveP == true && haveKC == true) {
+		{
 			PrintAll(LoadPipeline(), LoadKC());
 			break;
 		}
-		else { cout << "there are not data, please enter them in action 1 and 2"; }
 		case 0:
 		{
 			return 0;
@@ -372,5 +372,5 @@ int main()
 
 		return 0;
 	}
-}
+
 
