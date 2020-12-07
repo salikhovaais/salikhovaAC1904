@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 using namespace std;
 struct Pipeline
 {
@@ -44,7 +45,7 @@ Pipeline inputPipeline()            //создание трубы
 	Pipeline x;
 	x.ident = 0;
 	x.remont = false;
-	x.havep == true;
+
 	cout << "type the length (m)\n";
 	do
 	{
@@ -68,7 +69,7 @@ KC inputkc()   //создание компрессорной станции пр
 {
 	KC y;
 	y.ident = 0;
-	y.havekc == true;
+
 	cout << "type name kc \n";
 	cin >> y.name;
 	cout << " type number of workshop \n";
@@ -300,9 +301,7 @@ int main()
 	Pipeline p;
 	KC k;
 
-	bool havep = 0;
-	bool havekc = 0;
-
+	
 	while (1)
 	{
 		PrintMenu();
@@ -312,56 +311,46 @@ int main()
 		case 1:
 		{
 			p = inputPipeline();
-		havep == true;
+		
 			break;
 		}
 		case 2:
 		{
 			k = inputkc();
-			havekc == true;
+			
 			break;
 		}
 		case 3:
-		{if (havep == true || havekc == true || (havep == true && havekc == true))
+		
 		{
-			{
 				cout << " choose what to show  1-pipe, 2- KC ";
 				int a = 0;
 				cin >> a;
 				PrintAll( p, k);
 				break;
-			}
 		}
-		else
-		{
-			cout << "there are not data, please enter them in action 1 and 2";
-		}}
+		
 
 
 
 		case 4: 
-		{ if (havep == true)
+		
 		{
 			Editpipeline(p);
 			break;
 		}
-		else
-		{
-			cout << "there are not data, please enter them in action 1 ";
-		}
-		}
+		
+		
 
 		case 5:
-		{if (havekc == true)
+		
 		{
 			EditKC(k);
 			break;
 		}
-		else {
-			cout << "there are not data, please enter them in action 2";
-		}}
+	
 		case 6:
-			{if (havep == true || havekc == true || (havep == true && havekc==true))
+			
 		{
 			cout << "choose what to save 1.pipeline \t2.kc  \t3.all";
 			int a;
@@ -369,8 +358,6 @@ int main()
 			Save(a,p, k);
 			break;
 		}
-			else { cout << "there are not data, please enter them in action 1 and 2"; }
-			}
 		case 7:
 		{
 			LoadAll(p, k);
