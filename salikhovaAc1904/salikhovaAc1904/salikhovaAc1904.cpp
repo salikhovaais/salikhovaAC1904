@@ -47,6 +47,33 @@ string checkRemont(Pipeline& p)//rename and class
 {
 	return (p.remont) ? "Unworking \n\n" : "Working \n\n";
 }
+//template<typename C>
+//ostream& operator << (ostream& out, const vector<C>& object)// вектор 
+//{
+//	for (const C& i : object)
+//	{
+//		out << i;
+//	}
+//	return out;
+//}
+//template<typename C>
+//ofstream& operator << (ofstream& fout, const vector<C>& object)
+//{
+//	for (const C& c : object)
+//	{
+//		fout << c;
+//	}
+//	return fout;
+//}
+//template <typename C>
+//ifstream& operator >> (ifstream& in, vector<C>& object)
+//{
+//	for (C& c : object)
+//	{
+//		in >> c;
+//	}
+//	return in;
+//}
 Pipeline inputPipeline()            //создание трубы
 {
 	Pipeline x;
@@ -300,7 +327,6 @@ void Save(int a, vector<Pipeline>& pv, vector<KC>& kv)
 	}
 }
 KC  EditKC(KC& y)
-
 {   
 	cout << "press 1 to add the operating workshop";
 	cout << "\npress 2 to remove the operating workshop  ";
@@ -316,10 +342,59 @@ KC  EditKC(KC& y)
 	}
 	return y;
 }
-
+vector<KC> EditAllKC(vector<KC>& kv)
+{
+	cout << "\n0. Start the workshop\n1. Stop the workshop\nSelect - ";
+	int choice = Getcorrectnumber(0, 1);
+	cout << endl;
+	for (KC& i : kv)
+	{
+		if (choice == 0 && (i.zeh > i.workzeh))
+		{
+			i.workzeh += 1;
+		}
+		else if (i.workzeh > 0)
+		{
+			i.workzeh -= 1;
+		}
+	}
+	return kv;
+}
+vector<KC> EditOneKC(vector<KC>& kv)
+{
+	cout << "id of the KC you want to edit: ";
+	int k;
+	cin >> k;
+	cout << "\n0. start the working zeh\n1. stop the working zeh\nSelect - ";
+	if (Getcorrectnumber(0, 1) == 0)
+	{
+		if (kv[k].zeh > kv[k].workzeh)
+			kv[k].workzeh += 1;
+	}
+	else
+	{
+		if (kv[k].workzeh > 0)
+			kv[k].workzeh -= 1;
+	}
+	return kv;
+}
+void EditKC(vector<KC>& kv)
+{
+	cout << "choose\n1. edit all KC\n2. edit one KC\n";
+	if (Getcorrectnumber(1, 2) == 1)
+	{
+		cout << endl;
+		EditAllKC(kv);
+	}
+	else
+	{
+		cout << endl;
+		EditOneKC(kv);
+	}
+}
 void EditAllPipeline(vector<Pipeline>& pv)
 {
-	cout << "0. pipelines working\n1. pipelines  repairing\nChoose - ";
+	cout << "choose\n0. pipelines working\n1. pipelines  repairing\n";
 	int choice = Getcorrectnumber(0, 1);
 	cout << endl;
 	for (Pipeline& i : pv)
@@ -339,8 +414,8 @@ vector<Pipeline> EditOnePipeline(vector<Pipeline>& pv)
 	return pv;
 }
 void Editpipeline(vector<Pipeline>& pv)
-{
-	cout << "1. Edit all existing ones\n2. Edit one pipe\nSelect - ";
+{  
+	cout << "1. Edit all existing pipelines\n2. Edit one pipeline\nSelect - ";
 	if (Getcorrectnumber(1, 2) == 1)
 	{
 		cout << endl;
@@ -353,33 +428,89 @@ void Editpipeline(vector<Pipeline>& pv)
 	}
 }
 
-
-template<typename C>
-ostream& operator << (ostream& out, const vector<C>& object)// вектор 
+bool SearchById(Pipeline& p, int param)
 {
-	for (const C& i : object)
-	{
-		out << i;
-	}
-	return out;
+	return p.ident == param;
 }
-template<typename C>
-ofstream& operator << (ofstream& fout, const vector<C>& object)
+bool SearchByRepair(Pipeline& p, int param)
 {
-	for (const C& c : object)
-	{
-		fout << c;
-	}
-	return fout;
+	return p.remont == param - 1;
 }
-template <typename C>
-ifstream& operator >> (ifstream& in, vector<C>& object)
+bool SearchByName(KC& k, string name)
 {
-	for (C& c : object)
+	return k.name == name;
+}
+bool SearchByPercent(KC& cs, int param)
+{
+	return 100 * (1 - (1. * cs.workzeh) / cs.zeh) >= param;
+}
+template <typename N>
+void infoByFilterPipeline(vector<Pipeline>& vect, bool(*f)(Pipeline& p, N param), N param)
+{
+	for (Pipeline& i : vect)
 	{
-		in >> c;
+		if (f(i, param))
+		{
+			cout << endl << "Pipe id: "
+				<< i.ident << endl 
+				<< "diametr: " << i.diametr << endl
+				<< "length: " << i.length <<endl 
+				<< "pipe condition: " << checkRemont(i);
+		}
 	}
-	return in;
+	cout << endl;
+}
+template <typename N>
+void infoByFilterKC(vector<KC>& vect, bool(*f)(KC& p, N param), N param)
+{
+	for (KC& i : vect)
+	{
+		if (f(i, param))
+		{
+			/*cout.precision(2);*/
+			cout << "\nKC id: " << i.ident << endl 
+				<< "name: " << i.name << endl
+				<< "quantity of zeh: " << i.zeh << endl
+				<< "quantity of working zeh: " << i.workzeh << endl
+				<< "efficiency: " << i.eff << endl
+				<< endl;
+		}
+	}
+	cout << endl;
+}
+void SearchByFilterPipeline(vector<Pipeline>& pipes)
+{
+	cout << "\nchoose by what\n1.ID\n2.condition\n ";
+	if (Getcorrectnumber(1, 2) == 1)
+	{
+		cout << "Enter ID: ";
+		int ch = Getcorrectnumber(0, 100);
+		infoByFilterPipeline(pipes, SearchById, ch);
+	}
+	else
+	{
+		cout << "\n1. Working\n2. Unworking\nSelect action - ";
+		int choice = Getcorrectnumber(1, 2);
+		infoByFilterPipeline(pipes, SearchByRepair, choice);
+	}
+}
+void SearchByFilterKC(vector<KC>& kv)
+{
+	cout << "\nchoose by what\n1.name\n" << "2.percentage of unused workzeh";
+	if (Getcorrectnumber(1, 2) == 1)
+	{
+		int counter = 0;
+		cout << "\ntype a name : ";
+		string name;
+		cin >> name;
+		infoByFilterKC(kv, SearchByName, name);
+	}
+	else
+	{
+		cout << "\ntype the number of percentages - ";
+		int choice = Getcorrectnumber(0, 100);
+		infoByFilterKC(kv, SearchByPercent, choice);
+	}
 }
 void PrintMenu()
 {
@@ -389,9 +520,10 @@ void PrintMenu()
 		
 		<< "4. edit pipeline" << endl
 		<< "5. edit KC" << endl
-
+		
 		<< "6. save to file" << endl
 		<< "7. load from file" << endl
+		<< "8. search by filter " << endl
 		<< "0. exit" << endl
 		<< "choose action" << endl;
 
@@ -406,12 +538,13 @@ int main()
 	{
 		PrintMenu();
 
-		switch (Getcorrectnumber(0, 7))
+		switch (Getcorrectnumber(0, 8))
 		{
 		case 1:
 		{
 			Pipeline p;
 			p = inputPipeline();
+			pv.push_back(p);
 		
 			break;
 		}
@@ -419,22 +552,17 @@ int main()
 		{
 			KC k;
 			k = inputkc();
-			
+			kv.push_back(k);
 			break;
 		}
 		case 3:
 		
 		{
 				cout << " choose what to show  1-pipe, 2- KC ";
-				int a = 0;
-				cin >> a;
 				PrintAll( pv, kv);
 				break;
 		}
 		
-
-
-
 		case 4: 
 		
 		{
@@ -463,6 +591,15 @@ int main()
 		case 7:
 		{
 			LoadAll(pv, kv);
+			break;
+		}
+		case 8:
+		{
+			cout << "choose number to search by\n1.pipelines\n2.KC";
+			if (Getcorrectnumber(1, 2) == 1)
+				SearchByFilterPipeline(pv);
+			else
+				SearchByFilterKC(kv);
 			break;
 		}
 		case 0:
