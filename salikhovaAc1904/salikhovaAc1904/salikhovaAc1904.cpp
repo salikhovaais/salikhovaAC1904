@@ -2,24 +2,26 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include "Pipeline.h"
+#include "KC.h"
 using namespace std;
-struct Pipeline
-{
-	double length;
-	double diametr;
-	bool remont;
-	int ident;
-	bool havep;
-};
-struct KC
-{
-	int ident;
-	string name;
-	int zeh; // кол-во цехов
-	int workzeh; // кол-во работающих цех
-	double eff;//эффективность 
-	bool havekc;
-};
+//struct Pipeline
+//{
+//	double length;
+//	double diametr;
+//	bool remont;
+//	int ident;
+//	bool havep;
+//};
+//struct KC
+//{
+//	int ident;
+//	string name;
+//	int zeh; // кол-во цехов
+//	int workzeh; // кол-во работающих цех
+//	double eff;//эффективность 
+//	bool havekc;
+//};
 
 bool isNumber(char Symbol)           //проверка цифра или нет 
 {
@@ -69,7 +71,6 @@ KC inputkc()   //создание компрессорной станции пр
 {
 	KC y;
 	y.ident = 0;
-
 	cout << "type name kc \n";
 	cin >> y.name;
 	cout << " type number of workshop \n";
@@ -99,33 +100,35 @@ KC inputkc()   //создание компрессорной станции пр
 	} while (cin.fail() || isNumber(y.eff));
 	return y;
 }
-void PrintPipeline(const Pipeline& x)
+void PrintPipeline(vector<Pipeline>& pv)
 {
+	for (Pipeline x : pv)
 	cout << "\tPipe identification:" << x.ident << endl
 		<< "length:" << x.length << endl
 		<< "diametr:" << x.diametr << endl
-		<< "remont:" << x.remont << endl;
+		<< "remont:" << checkRemont(x);
 
 }
-void PrintKC(const KC& y)
+void PrintKC(vector<KC>& kv)
 {
+	for (KC y : kv)
 	cout << "\tKC name:" << y.name << endl 
 		<< "identification:" << y.ident << endl
 		<< "number of workshop:" << y.zeh << endl
 		<< "number of operating workshops:" << y.workzeh << endl
 		<< "efficiency:" << y.eff << endl;
 }
-void PrintAll( const Pipeline& x, const KC& y) // показать все
+void PrintAll(vector<Pipeline> pv, vector<KC> kv) // показать все
 {
 	int a;
 	a = Getcorrectnumber(1, 2);
 	switch (a)
 	{
 	case 1:
-		PrintPipeline(x);
+		PrintPipeline(pv);
 		break;
 	case 2:
-		PrintKC(y);
+		PrintKC(kv);
 		break;
 	}
 }
@@ -279,7 +282,37 @@ void Editpipeline(Pipeline& x)
 		cout << "\nnow the pipeline is  not in repair\n";
 	}
 }
-
+string checkRemont(Pipeline& p)//rename and class
+{
+	return (p.remont) ? "Unworking \n\n" : "Working \n\n";
+}
+template<typename C>
+ostream& operator << (ostream& out, const vector<C>& object)// вектор 
+{
+	for (const C& i : object)
+	{
+		out << i;
+	}
+	return out;
+}
+template<typename C>
+ofstream& operator << (ofstream& fout, const vector<C>& object)
+{
+	for (const C& c : object)
+	{
+		fout << c;
+	}
+	return fout;
+}
+template <typename C>
+ifstream& operator >> (ifstream& in, vector<C>& object)
+{
+	for (C& c : object)
+	{
+		in >> c;
+	}
+	return in;
+}
 void PrintMenu()
 {
 	cout << "1. input pipeline" << endl
@@ -298,9 +331,10 @@ void PrintMenu()
 
 int main()
 {
-	Pipeline p;
-	KC k;
-
+	
+	
+	vector <Pipeline> pv;
+	vector <KC> kv;
 	
 	while (1)
 	{
@@ -310,12 +344,14 @@ int main()
 		{
 		case 1:
 		{
+			Pipeline p;
 			p = inputPipeline();
 		
 			break;
 		}
 		case 2:
 		{
+			KC k;
 			k = inputkc();
 			
 			break;
@@ -326,7 +362,7 @@ int main()
 				cout << " choose what to show  1-pipe, 2- KC ";
 				int a = 0;
 				cin >> a;
-				PrintAll( p, k);
+				PrintAll( pv, kv);
 				break;
 		}
 		
