@@ -10,6 +10,7 @@ public:
 	bool remont;
 	int ident;
 	static int idP;
+	Pipeline();
 };
 
 

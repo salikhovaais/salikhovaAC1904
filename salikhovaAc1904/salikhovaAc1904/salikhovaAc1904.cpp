@@ -42,6 +42,11 @@ T Getcorrectnumber(T min, T max)//проверка на введение нуж�
 	}
 	return x;
 }
+
+string checkRemont(Pipeline& p)//rename and class
+{
+	return (p.remont) ? "Unworking \n\n" : "Working \n\n";
+}
 Pipeline inputPipeline()            //создание трубы
 {
 	Pipeline x;
@@ -312,20 +317,43 @@ KC  EditKC(KC& y)
 	return y;
 }
 
-void Editpipeline(Pipeline& x)
+void EditAllPipeline(vector<Pipeline>& pv)
 {
-	if (x.remont == 1) {
-		cout << "\nnow the pipeline is  in repair\n";
-	}
-	else {
-		x.remont = 0;
-		cout << "\nnow the pipeline is  not in repair\n";
+	cout << "0. pipelines working\n1. pipelines  repairing\nChoose - ";
+	int choice = Getcorrectnumber(0, 1);
+	cout << endl;
+	for (Pipeline& i : pv)
+	{
+		i.remont = choice;
 	}
 }
-string checkRemont(Pipeline& p)//rename and class
+vector<Pipeline> EditOnePipeline(vector<Pipeline>& pv)
 {
-	return (p.remont) ? "Unworking \n\n" : "Working \n\n";
+	cout << "type id you want to edit: ";
+	int n;
+	cin >> n;
+	cout << "0. pipe working\n1. pipe in repairing\nChoose - ";
+	int choice = Getcorrectnumber(0, 1);
+	pv[n].remont = choice;
+	cout << endl;
+	return pv;
 }
+void Editpipeline(vector<Pipeline>& pv)
+{
+	cout << "1. Edit all existing ones\n2. Edit one pipe\nSelect - ";
+	if (Getcorrectnumber(1, 2) == 1)
+	{
+		cout << endl;
+		EditAllPipeline(pv);
+	}
+	else
+	{
+		cout << endl;
+		EditOnePipeline(pv);
+	}
+}
+
+
 template<typename C>
 ostream& operator << (ostream& out, const vector<C>& object)// вектор 
 {
@@ -371,8 +399,6 @@ void PrintMenu()
 
 int main()
 {
-	
-	
 	vector <Pipeline> pv;
 	vector <KC> kv;
 	

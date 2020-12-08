@@ -12,6 +12,7 @@ class KC
 	int workzeh; // кол-во работающих цех
 	double eff;//эффективность 
 	static int idK;
+	KC();
 };
 
 
