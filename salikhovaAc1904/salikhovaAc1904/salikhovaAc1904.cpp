@@ -132,7 +132,7 @@ void PrintAll(vector<Pipeline> pv, vector<KC> kv) // показать все
 		break;
 	}
 }
-void LoadPipeline(vector<Pipeline> pv)            //загрузка из файла   
+void LoadPipeline(vector<Pipeline>& pv)            //загрузка из файла   
 {
 	ifstream fin;
 	fin.open("data.txt", ios::in);
@@ -156,7 +156,7 @@ void LoadPipeline(vector<Pipeline> pv)            //загрузка из фай
 
 	}
 }
-void LoadKC(vector<KC> kv)
+void LoadKC(vector<KC>& kv)
 {
 	ifstream fin;
 	fin.open("KC.txt", ios::in);
@@ -179,13 +179,7 @@ void LoadKC(vector<KC> kv)
 }
 
 
-
-			
-	
-	
-
-
-void LoadAll(vector<Pipeline> pv, vector<KC> kv)
+void LoadAll(vector<Pipeline>& pv, vector<KC>& kv)
 {
 	
 	
@@ -206,67 +200,97 @@ void LoadAll(vector<Pipeline> pv, vector<KC> kv)
 	
 	
 
-void SavePipeline(const Pipeline& x) // сохр в файл трубу
+void SavePipeline(vector<Pipeline>& pv) // сохр в файл трубу
 {
 	ofstream fout;
-	fout.open("pipe.txt", ios::out );
+	fout.open("pipe.txt", ios::out);
 	if (fout.is_open())
 	{
-		fout << x.length << endl
-			<< x.diametr << endl
-			<< x.ident << endl
-			<< x.remont << endl;
-		fout.close();
+		fout << pv.size() << endl;
+		if (pv.size() != 0)
+		{
+			for (const Pipeline& x : pv)
+			{
+				fout << x.ident << endl 
+					<< x.diametr << endl
+					<< x.length << endl
+					<< x.remont << endl 
+					<< endl;
+				fout.close();
+			}
+		}
+
 	}
 }
 
-void SaveKC(const KC& y)
+void SaveKC(vector<KC>& kv)
 {
 	ofstream fout;
 	fout.open("KC.txt", ios::out);
 	if (fout.is_open())
 	{
-		fout << y.ident << endl
-			<< y.name << endl
-			<< y.zeh << endl
-			<< y.workzeh << endl
-			<< y.eff << endl;
-		fout.close();
+		fout << kv.size() << endl;
+		if (kv.size() != 0)
+		{
+			for (const KC& y : kv)
+			{
+				fout << y.ident << endl
+					<< y.name << endl
+					<< y.zeh << endl
+					<< y.workzeh << endl
+					<< y.eff << endl;
+				fout.close();
+			}
+		}
 	}
 }
-void Saveall(const Pipeline& x, const KC& y)
+void Saveall(vector<Pipeline>& pv, vector<KC>& kv)
 {
 	ofstream fout;
 	fout.open("ALL.txt", ios::out);
 	if (fout.is_open())
+		fout << pv.size() << endl;
+	fout << kv.size() << endl;
+	fout << endl;
+
+	if (pv.size() != 0 ||kv.size() != 0)
 	{
-		fout << "Pipeline:"<< endl
-			<< x.ident << endl 
-			<< x.length << endl
-			<< x.diametr << endl
-			<< x.remont << endl
-		     << "KC:" << endl
-			<< y.ident << endl
+		for (const Pipeline& x : pv)
+		{
+			fout << "Pipeline:" << endl 
+				<< x.ident << endl
+				<< x.diametr << endl
+				<< x.length << endl
+				<< x.remont << endl
+				<< endl;
+		}
+		for (const KC& y : kv)
+		{
+			fout 
+				<< "KC:" << endl 
+				<< y.ident << endl
 			<< y.name << endl
 			<< y.zeh << endl
 			<< y.workzeh << endl
 			<< y.eff << endl;
-		fout.close();
+		}
+	
 	}
+	fout.close();
 }
-void Save(int a,const Pipeline& p,const KC& kc)
+
+void Save(int a, vector<Pipeline>& pv, vector<KC>& kv)
 {
 	switch (a)
 	{
-		
 	case 1:
-		SavePipeline(p);
+		SavePipeline(pv);
 		break;
 	case 2:
-		SaveKC(kc);
+		SaveKC(kv);
 		break;
 	case 3:
-		Saveall(p, kc);
+		Saveall(pv, kv);
 		break;
 	}
 }
@@ -388,7 +412,7 @@ int main()
 		case 4: 
 		
 		{
-			Editpipeline(p);
+			Editpipeline(pv);
 			break;
 		}
 		
@@ -397,7 +421,7 @@ int main()
 		case 5:
 		
 		{
-			EditKC(k);
+			EditKC(kv);
 			break;
 		}
 	
@@ -407,12 +431,12 @@ int main()
 			cout << "choose what to save 1.pipeline \t2.kc  \t3.all";
 			int a;
 			a = Getcorrectnumber(1, 3);
-			Save(a,p, k);
+			Save(a,pv, kv);
 			break;
 		}
 		case 7:
 		{
-			LoadAll(p, k);
+			LoadAll(pv, kv);
 			break;
 		}
 		case 0:
