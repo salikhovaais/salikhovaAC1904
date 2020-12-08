@@ -132,58 +132,74 @@ void PrintAll(vector<Pipeline> pv, vector<KC> kv) // показать все
 		break;
 	}
 }
-Pipeline LoadPipeline()            //загрузка из файла   
+void LoadPipeline(vector<Pipeline> pv)            //загрузка из файла   
 {
 	ifstream fin;
 	fin.open("data.txt", ios::in);
 	fin.open("Pipeline.txt", ios::in);
 	if (fin.is_open())
 	{
-		Pipeline x;
-		x.ident = 0;
-		fin >> x.remont;
-		fin >> x.length;
-		fin >> x.diametr;
-		fin.close();
-		return x;
-	}
+		int lp;
+		fin >> lp;
+		pv.resize(lp);
 
+		for (Pipeline& x : pv)
+		{
+
+			fin >> x.remont;
+			fin >> x.ident;
+			fin >> x.length;
+			fin >> x.diametr;
+			fin.close();
+
+		}
+
+	}
 }
-KC LoadKC()
+void LoadKC(vector<KC> kv)
 {
 	ifstream fin;
 	fin.open("KC.txt", ios::in);
 	if (fin.is_open())
 	{
-		KC y;
-		y.ident = 0;
-		fin >> y.name;
-		fin >> y.zeh;
-		fin >> y.workzeh;
-		fin >> y.eff;
+		int lk;
+		fin >> lk;
+		kv.resize(lk);
+		for (KC& y : kv)
+		{
+			y.ident = 0;
+			fin >> y.name;
+			fin >> y.zeh;
+			fin >> y.workzeh;
+			fin >> y.eff;
 
-		fin.close();
-
-
-		return y;
+			fin.close();
+		}
 	}
 }
 
-void LoadAll(Pipeline& x, KC& y)
+
+
+			
+	
+	
+
+
+void LoadAll(vector<Pipeline> pv, vector<KC> kv)
 {
 	
 	
 		switch (Getcorrectnumber(1, 3))
 		{
 		case 1:
-			PrintPipeline(LoadPipeline());
+			LoadPipeline(pv);
 			break;
 		case 2:
-			PrintKC(LoadKC());
+			LoadKC(kv);
 			break;
 
 		case 3:
-			LoadAll(x, y);
+			LoadAll(pv, kv);
 			break;
 		}
 }
