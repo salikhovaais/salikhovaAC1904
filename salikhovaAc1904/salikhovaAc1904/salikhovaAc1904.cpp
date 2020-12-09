@@ -63,20 +63,28 @@ std::istream& operator>>(std::istream& in, Pipeline& x) //создание тр�
 void PrintPipeline(vector<Pipeline>& pv)
 {
 	for (Pipeline x : pv)
-	cout << "\tPipe identification:" << x.ident << endl
-		<< "length:" << x.length << endl
-		<< "diametr:" << x.diametr << endl
-		<< "remont:" << checkRemont(x);
+		cout << "select id you want to output: ";
+	int Outp;
+	cin >> Outp;
+	cout.precision(2);
+	cout << "\tPipe identification:" << pv[Outp].ident << endl << "length:" << pv[Outp].length
+		<< endl << "diametr:" << pv[Outp].diametr << endl
+		<< "remont: " << pv[Outp].remont << endl;
+	
 
 }
 void PrintKC(vector<KC>& kv)
 {
 	for (KC y : kv)
-	cout << "\tKC name:" << y.name << endl 
-		<< "identification:" << y.ident << endl
-		<< "number of workshop:" << y.zeh << endl
-		<< "number of operating workshops:" << y.workzeh << endl
-		<< "efficiency:" << y.eff << endl;
+	cout << "select id you want to output: ";
+	int Outk;
+	cin >> Outk;
+	cout.precision(2);
+	cout << "\nKC id: " << kv[Outk].ident << endl << "name: " << kv[Outk].name
+		<< endl << "quantity of workshops: " << kv[Outk].zeh << endl
+		<< "quantity of workshop workers: " << kv[Outk].workzeh << endl
+		<< "efficiency: " << kv[Outk].eff << endl << endl;
+	
 }
 void PrintAll(vector<Pipeline> pv, vector<KC> kv) // показать все
 {
@@ -353,28 +361,28 @@ bool SearchByName(KC& k, string name)
 {
 	return k.name == name;
 }
-bool SearchByPercent(KC& cs, int param)
+bool SearchByPercent(KC& kv, int param)
 {
-	return 100 * (1 - (1. * cs.workzeh) / cs.zeh) >= param;
+	return 100 * (1 - (1. * kv.workzeh) / kv.zeh) >= param;
 }
 template <typename N>
-void infoByFilterPipeline(vector<Pipeline>& vect, bool(*f)(Pipeline& p, N param), N param)
+void infoFilterPipeline(vector<Pipeline>& vect, bool(*f)(Pipeline& p, N param), N param)
 {
 	for (Pipeline& i : vect)
 	{
 		if (f(i, param))
 		{
-			cout << endl << "Pipe id: "
+			cout << endl << "Pipeline id: "
 				<< i.ident << endl 
 				<< "diametr: " << i.diametr << endl
 				<< "length: " << i.length <<endl 
-				<< "pipe condition: " << checkRemont(i);
+				<< "pipe working?: " << checkRemont(i);
 		}
 	}
 	cout << endl;
 }
 template <typename N>
-void infoByFilterKC(vector<KC>& vect, bool(*f)(KC& p, N param), N param)
+void infoFilterKC(vector<KC>& vect, bool(*f)(KC& p, N param), N param)
 {
 	for (KC& i : vect)
 	{
@@ -393,18 +401,18 @@ void infoByFilterKC(vector<KC>& vect, bool(*f)(KC& p, N param), N param)
 }
 void SearchByFilterPipeline(vector<Pipeline>& pipes)
 {
-	cout << "\nchoose by what\n1.ID\n2.condition\n ";
+	cout << "\nchoose by what\n1.ID\n2.working or no\n ";
 	if (Getcorrectnumber(1, 2) == 1)
 	{
 		cout << "Enter ID: ";
 		int ch = Getcorrectnumber(0, 100);
-		infoByFilterPipeline(pipes, SearchById, ch);
+		infoFilterPipeline(pipes, SearchById, ch);
 	}
 	else
 	{
-		cout << "\n1. Working\n2. Unworking\nSelect action - ";
+		cout << "\nchoose \n1. working\n2. unworking ";
 		int choice = Getcorrectnumber(1, 2);
-		infoByFilterPipeline(pipes, SearchByRepair, choice);
+		infoFilterPipeline(pipes, SearchByRepair, choice);
 	}
 }
 void SearchByFilterKC(vector<KC>& kv)
@@ -416,13 +424,13 @@ void SearchByFilterKC(vector<KC>& kv)
 		cout << "\ntype a name : ";
 		string name;
 		cin >> name;
-		infoByFilterKC(kv, SearchByName, name);
+		infoFilterKC(kv, SearchByName, name);
 	}
 	else
 	{
 		cout << "\ntype the number of percentages - ";
 		int choice = Getcorrectnumber(0, 100);
-		infoByFilterKC(kv, SearchByPercent, choice);
+		infoFilterKC(kv, SearchByPercent, choice);
 	}
 }
 void Delete(vector <Pipeline>& pv, vector <KC>& kv)
