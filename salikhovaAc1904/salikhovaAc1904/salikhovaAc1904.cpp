@@ -62,7 +62,7 @@ std::istream& operator>>(std::istream& in, Pipeline& x) //создание тр�
 
 void PrintPipeline(vector<Pipeline>& pv)
 {
-	for (Pipeline x : pv)
+	/*for (Pipeline x : pv)*/
 		cout << "select id you want to output: ";
 	int Outp;
 	cin >> Outp;
@@ -75,7 +75,7 @@ void PrintPipeline(vector<Pipeline>& pv)
 }
 void PrintKC(vector<KC>& kv)
 {
-	for (KC y : kv)
+	/*for (KC y : kv)*/
 	cout << "select id you want to output: ";
 	int Outk;
 	cin >> Outk;
