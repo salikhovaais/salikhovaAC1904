@@ -15,18 +15,18 @@ bool isNumber(char Symbol)           //проверка цифра или нет
 	return false;
 }
 
-template <typename T>
-T Getcorrectnumber(T min, T max)//проверка на введение нужной цифры 
-{
-	int x;
-	while ((cin >> x).fail() || x<min || x> max)
-	{
-		cin.clear();
-		cin.ignore(1000, '\n');
-		cout << "Type number (" << min << "-" << max << "):";
-	}
-	return x;
-}
+//template <typename T>
+//T Getcorrectnumber(T min, T max)//проверка на введение нужной цифры 
+//{
+//	int x;
+//	while ((cin >> x).fail() || x<min || x> max)
+//	{
+//		cin.clear();
+//		cin.ignore(1000, '\n');
+//		cout << "Type number (" << min << "-" << max << "):";
+//	}
+//	return x;
+//}
 
 std:: string checkRemont(Pipeline& p)//rename and class
 {
@@ -39,190 +39,68 @@ std:: string checkRemont(Pipeline& p)//rename and class
 	
 
 
-void PrintKC(vector<KC>& kv)
-{
-	/*for (KC y : kv)*/
-	cout << "select id you want to output: ";
-	int Outk;
-	cin >> Outk;
-	cout.precision(2);
-	cout << "\nKC id: " << kv[Outk].ident << endl << "name: " << kv[Outk].name
-		<< endl << "quantity of workshops: " << kv[Outk].zeh << endl
-		<< "quantity of workshop workers: " << kv[Outk].workzeh << endl
-		<< "efficiency: " << kv[Outk].eff << endl << endl;
-	
-}
-void PrintPipeline(vector<Pipeline>& pv)
-{
-	/*for (Pipeline x : pv)*/
-	cout << "select id you want to output: ";
-	int Outp;
-	cin >> Outp;
-	cout.precision(2);
-	cout <</* "\tPipe identification:" << pv[Outp].ident << endl*//* <<*/ "length:" << pv[Outp].length
-		<< endl << "diametr:" << pv[Outp].diametr << endl
-		<< "remont: " << pv[Outp].remont << endl;
-}
-void PrintAll(vector<Pipeline> pv, vector<KC> kv) // показать все
-{
-	int a;
-	a = Getcorrectnumber(1, 2);
-	switch (a)
-	{
-	case 1:
-		PrintPipeline(pv);
-		break;
-	case 2:
-		PrintKC(kv);
-		break;
-	}
-}
-void LoadPipeline(vector<Pipeline>& pv)            //загрузка из файла   
-{
-	ifstream fin;
-	fin.open("data.txt", ios::in);
-	fin.open("Pipeline.txt", ios::in);
-	if (fin.is_open())
-	{
-		int lp;
-		fin >> lp;
-		pv.resize(lp);
-
-		for (Pipeline& x : pv)
-		{
-
-			fin >> x.remont;
-			fin >> x.ident;
-			fin >> x.length;
-			fin >> x.diametr;
-			fin.close();
-
-		}
-
-	}
-}
-void LoadKC(vector<KC>& kv)
-{
-	ifstream fin;
-	fin.open("KC.txt", ios::in);
-	if (fin.is_open())
-	{
-		int lk;
-		fin >> lk;
-		kv.resize(lk);
-		for (KC& y : kv)
-		{
-			
-			fin >> y.name;
-			fin >> y.zeh;
-			fin >> y.workzeh;
-			fin >> y.eff;
-
-			fin.close();
-		}
-	}
-}
 
 
-void LoadAll(vector<Pipeline>& pv, vector<KC>& kv)
-{
-	
-	
-		switch (Getcorrectnumber(1, 3))
-		{
-		case 1:
-			LoadPipeline(pv);
-			break;
-		case 2:
-			LoadKC(kv);
-			break;
 
-		case 3:
-			LoadAll(pv, kv);
-			break;
-		}
-}
+
+
 	
 	
 
- void SavePipeline(vector<Pipeline>& pv) // сохр в файл трубу
+void SavePipeline(vector <Pipeline> pv)
 {
-	ofstream fout;
-	fout.open("pipe.txt", ios::out);
-	if (fout.is_open())
+	if (pv.size() != 0)
+		cout << "there is no  pipeline\n ";
+	else
 	{
-		fout << pv.size() << endl;
-		if (pv.size() != 0)
+		ofstream fout;
+		fout.open("Pipeline.txt", ios::out);
+		if (fout.is_open())
 		{
-			for (const Pipeline& x : pv)
-			{
-				fout << x.ident << endl 
-					<< x.diametr << endl
-					<< x.length << endl
-					<< x.remont << endl 
-					<< endl;
-				fout.close();
-			}
+			fout << pv.size() << endl;
+			for (const auto& k : pv)
+				fout << k;
+			fout.close();
 		}
 	}
 }
-
-void SaveKC(vector<KC>& kv)
+void SaveAll(vector <Pipeline>& pv, vector <KC>& kv)
 {
-	ofstream fout;
-	fout.open("KC.txt", ios::out);
-	if (fout.is_open())
+	if ((pv.size() != 0) and (kv.size() != 0))
+		cout << "there is no pipeline and KC\n ";
+	else
 	{
-		fout << kv.size() << endl;
-		if (kv.size() != 0)
+		ofstream fout;
+		fout.open("ALL.txt", ios::out);
+		if (fout.is_open())
 		{
-			for (const KC& y : kv)
-			{
-				fout << y.ident << endl
-					<< y.name << endl
-					<< y.zeh << endl
-					<< y.workzeh << endl
-					<< y.eff << endl;
-				fout.close();
-			}
+			fout << pv.size() << endl;
+			fout << kv.size() << endl;
+			for (const auto& p : pv)
+				fout << p;
+			for (const auto& k : kv)
+				fout << k;
+			fout.close();
 		}
 	}
 }
-void Saveall(vector<Pipeline>& pv, vector<KC>& kv)
+void SaveKC( vector <KC> kv)
 {
-	ofstream fout;
-	fout.open("ALL.txt", ios::out);
-	if (fout.is_open())
-		fout << pv.size() << endl;
-	fout << kv.size() << endl;
-	fout << endl;
-
-	if (pv.size() != 0 ||kv.size() != 0)
+	if  (kv.size() != 0)
+		cout << "there is no  KC\n ";
+	else
 	{
-		for (const Pipeline& x : pv)
+		ofstream fout;
+		fout.open("KC.txt", ios::out);
+		if (fout.is_open())
 		{
-			fout << "Pipeline:" << endl 
-				<< x.ident << endl
-				<< x.diametr << endl
-				<< x.length << endl
-				<< x.remont << endl
-				<< endl;
+			fout << kv.size() << endl;
+			for (const auto& k : kv)
+				fout << k;
+			fout.close();
 		}
-		for (const KC& y : kv)
-		{
-			fout 
-				<< "KC:" << endl 
-				<< y.ident << endl
-			<< y.name << endl
-			<< y.zeh << endl
-			<< y.workzeh << endl
-			<< y.eff << endl;
-		}
-	
 	}
-	fout.close();
 }
-
 void Save(int a, vector<Pipeline>& pv, vector<KC>& kv)
 {
 	switch (a)
@@ -234,9 +112,24 @@ void Save(int a, vector<Pipeline>& pv, vector<KC>& kv)
 		SaveKC(kv);
 		break;
 	case 3:
-		Saveall(pv, kv);
+		SaveAll(pv, kv);
 		break;
 	}
+}
+void LoadAll(vector <Pipeline>& pv, vector <KC>& kv)
+{
+	ifstream fin;
+	fin.open("ALL.txt", ios::in);
+	if (fin.is_open())
+	{
+		char ch;
+		while (fin.get(ch))
+		{
+			cout << ch;
+		}
+	}
+	else cout << "file is not found\n";
+	fin.close();
 }
 
 void EditAllKC(vector<KC>& kv)
@@ -324,11 +217,11 @@ void Editpipeline(vector<Pipeline>& pv)
 		EditOnePipeline(pv);
 	}
 }
-
 bool SearchById(Pipeline& p, int param)
 {
 	return p.ident == param;
 }
+
 bool SearchByRepair(Pipeline& p, int param)
 {
 	return p.remont == param - 1;
@@ -348,8 +241,8 @@ void infoFilterPipeline(vector<Pipeline>& vect, bool(*f)(Pipeline& p, N param), 
 	{
 		if (f(i, param))
 		{
-			cout << endl << "Pipeline id: "
-				<< i.ident << endl 
+			cout /*<< endl << "Pipeline id: "
+				<< i.ident << endl */
 				<< "diametr: " << i.diametr << endl
 				<< "length: " << i.length <<endl 
 				<< "pipe working?: " << checkRemont(i);
@@ -357,15 +250,15 @@ void infoFilterPipeline(vector<Pipeline>& vect, bool(*f)(Pipeline& p, N param), 
 	}
 	cout << endl;
 }
-template <typename N>
-void infoFilterKC(vector<KC>& vect, bool(*f)(KC& p, N param), N param)
+template< typename N>
+void infoFilterKC( vector<KC>& vect, bool(*f)(KC& p, N param), N param)
 {
-	for (KC& i : vect)
+	for ( KC& i : vect)
 	{
 		if (f(i, param))
 		{
-			/*cout.precision(2);*/
-			cout << "\nKC id: " << i.ident << endl 
+			cout.precision(2);
+			cout /*<< "\nKC id: " << i.ident << endl */
 				<< "name: " << i.name << endl
 				<< "quantity of zeh: " << i.zeh << endl
 				<< "quantity of working zeh: " << i.workzeh << endl
@@ -450,7 +343,7 @@ int main()
 {
 	vector <Pipeline> pv;
 	vector <KC> kv;
-	
+
 	while (1)
 	{
 		PrintMenu();
@@ -460,7 +353,7 @@ int main()
 		case 1:
 		{
 			Pipeline p;
-			cin >> p ;
+			cin >> p;
 			pv.push_back(p);
 			break;
 		}
@@ -472,33 +365,49 @@ int main()
 			break;
 		}
 		case 3:
-		
+
 		{
-				cout << " choose what to show  1-pipeline, 2- KC ";
-				PrintAll( pv, kv);
+			cout << " choose what to show  1-pipeline, 2- KC ";
+			int a;
+			a = Getcorrectnumber(1, 2);
+			switch (a)
+			{
+			case 1:
+				if (pv.size())
+				{
+					for (const auto& p : pv) cout << p << endl;
+				}
+				else cout << "there is no information about pipelines\n ";
 				break;
-		}
-		
-		case 4: 
-		
+			case 2:
+				if (kv.size())
+				{
+					for (const auto& k : kv) cout << k << endl;
+				}
+				else cout << "there is no information about KC\n ";
+				break;
+			}
+
+		case 4:
+
 		{
 			Editpipeline(pv);
 			break;
 		}
 		case 5:
-		
+
 		{
 			EditKC(kv);
 			break;
 		}
-	
+
 		case 6:
-			
+
 		{
 			cout << "choose what to save 1.pipeline \t2.kc  \t3.all";
 			int a;
 			a = Getcorrectnumber(1, 3);
-			Save(a,pv, kv);
+			Save(a, pv, kv);
 			break;
 		}
 		case 7:
@@ -529,8 +438,9 @@ int main()
 		default:
 		{cout << "wrong action" << endl; }
 		}
-			}
-
-			return 0;
 		}
-		
+
+		return 0;
+	}
+
+}

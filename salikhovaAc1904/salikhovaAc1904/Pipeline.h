@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <vector>
 class Pipeline
 {
 private:
@@ -9,16 +10,18 @@ private:
 	int ident;
 public:
 	double length = 0;
-	double diametr= 0;
+	double diametr = 0;
 	bool remont = false;
 	Pipeline();
-	
+
 
 	//void LoadPipeline(vector<Pipeline>& pv)
-	
+
 	friend std::ostream& operator<<(std::ostream& out, const Pipeline& x);
 	friend std::istream& operator >>(std::istream& in, Pipeline& x);
 	friend std::ofstream& operator << (std::ofstream& fout, const Pipeline& x);
 	friend std::ifstream& operator >> (std::ifstream& fin, Pipeline& x);
-
-}; 
+	friend bool SearchById(Pipeline& p, int param);
+	/*template <typename N>*/
+	/*friend void infoFilterPipeline(vector<Pipeline>& vect, bool(*f)(Pipeline& p, int param), int param);*/
+};

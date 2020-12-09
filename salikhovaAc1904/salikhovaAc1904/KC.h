@@ -2,24 +2,26 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-using namespace std;
+#include <vector>
 
 class KC
+
 {
+private:
 	int ident;
 	static int idK;
- public:
-	 
+public:
+
 	std::string name;
-	int zeh; // кол-во цехов
-	int workzeh; // кол-во работающих цех
-	double eff;//эффективность 
-	
+	int zeh = 0;; // кол-во цехов
+	int workzeh = 0;; // кол-во работающих цех
+	double eff = 0;;//эффективность 
 	KC();
 	friend std::ostream& operator<<(std::ostream& out, const KC& x);
 	friend std::istream& operator >>(std::istream& in, KC& x);
 	friend std::ofstream& operator << (std::ofstream& fout, const KC& x);
 	friend std::ifstream& operator >> (std::ifstream& fin, KC& x);
-};
+	/*friend bool SearchById(KC& p, int param);*/
 
+};
 

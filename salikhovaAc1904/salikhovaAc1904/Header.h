@@ -1,8 +1,8 @@
 #pragma once
 #include <iostream>
 
-//template <typename T>
-int Getcorrectnumber(int min, int max)//проверка на введение нужной цифры 
+template <typename T>
+int Getcorrectnumber(T min, T max)//проверка на введение нужной цифры 
 {
 	int x;
 	while ((std::cin >> x).fail() || x<min || x> max)

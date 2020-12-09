@@ -29,10 +29,10 @@
     <ClInclude Include="Pipeline.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="KC.h">
+    <ClInclude Include="Header.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Header.h">
+    <ClInclude Include="KC.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
