@@ -12,7 +12,7 @@ Pipeline::Pipeline()
 }
 
 
-std::string checkRepair(const Pipeline& p)//rename and class
+std::string checkRemont(const Pipeline& p)//rename and class
 {
 	return (p.remont) ? "Unworking \n\n" : "Working \n\n";
 

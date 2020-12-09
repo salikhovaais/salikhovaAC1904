@@ -7,21 +7,10 @@ class Pipeline
 public:
 	double length;
 	double diametr;
-	bool remont;
+	bool remont = false;
 	int ident;
 	static int idP;
+	friend std::string checkRemont(const Pipeline& p);
 	Pipeline();
 };
 
-
-
-
-
-//
-//	int id;
-//	static int CountP;
-//	float diametr, length;
-//	bool repair = false;
-//	friend std::string checkRepair(const CPipe& p);
-//	CPipe();
-//};

@@ -7,7 +7,7 @@ class KC
 	
  public:
 	 int ident;
-	string name;
+	std::string name;
 	int zeh; // кол-во цехов
 	int workzeh; // кол-во работающих цех
 	double eff;//эффективность 
@@ -16,9 +16,3 @@ class KC
 };
 
 
-	/*int id;
-	static int CountCs;
-	int totalShop, workShop;
-	float efficiency;
-	std::string name;
-	CCS();*/
