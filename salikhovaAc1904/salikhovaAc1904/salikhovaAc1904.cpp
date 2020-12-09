@@ -254,23 +254,8 @@ void Save(int a, vector<Pipeline>& pv, vector<KC>& kv)
 		break;
 	}
 }
-KC  EditKC(KC& y)
-{   
-	cout << "press 1 to add the operating workshop";
-	cout << "\npress 2 to remove the operating workshop  ";
-	int  k;
-	k= Getcorrectnumber(1,2);
-	if (k==1)
-	{
-		y.workzeh += 1;
-	}
-	else
-	{
-		y.workzeh -= 1;
-	}
-	return y;
-}
-vector<KC> EditAllKC(vector<KC>& kv)
+
+void EditAllKC(vector<KC>& kv)
 {
 	cout << "\n0. Start the workshop\n1. Stop the workshop\nSelect - ";
 	int choice = Getcorrectnumber(0, 1);
@@ -286,9 +271,9 @@ vector<KC> EditAllKC(vector<KC>& kv)
 			i.workzeh -= 1;
 		}
 	}
-	return kv;
+	
 }
-vector<KC> EditOneKC(vector<KC>& kv)
+void EditOneKC(vector<KC>& kv)
 {
 	cout << "id of the KC you want to edit: ";
 	int k;
@@ -304,7 +289,7 @@ vector<KC> EditOneKC(vector<KC>& kv)
 		if (kv[k].workzeh > 0)
 			kv[k].workzeh -= 1;
 	}
-	return kv;
+	
 }
 void EditKC(vector<KC>& kv)
 {
@@ -335,7 +320,7 @@ vector<Pipeline> EditOnePipeline(vector<Pipeline>& pv)
 	cout << "type id you want to edit: ";
 	int n;
 	cin >> n;
-	cout << "0. pipe working\n1. pipe in repairing\nChoose - ";
+	cout << "\nchoose\n0. pipe not repairing \n1. pipe in repairing";
 	int choice = Getcorrectnumber(0, 1);
 	pv[n].remont = choice;
 	cout << endl;
@@ -343,7 +328,7 @@ vector<Pipeline> EditOnePipeline(vector<Pipeline>& pv)
 }
 void Editpipeline(vector<Pipeline>& pv)
 {  
-	cout << "1. Edit all existing pipelines\n2. Edit one pipeline\nSelect - ";
+	cout << "\nchoose\n1. edit all  pipelines\n2. edit one pipeline ";
 	if (Getcorrectnumber(1, 2) == 1)
 	{
 		cout << endl;
