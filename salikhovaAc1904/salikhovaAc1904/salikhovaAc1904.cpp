@@ -34,18 +34,26 @@ std:: string checkRemont(Pipeline& p)//rename and class
 std::istream& operator>>(std::istream& in, KC& y)
 {
 	
-	cout << "type name kc \n";
+	std::cout << "type name kc \n";
 	 cin.ignore();
 	getline(cin, y.name);
-	cout << " type number of zeh \n";
+	std::cout << " type number of zeh \n";
  y.zeh = Getcorrectnumber(0,1000);
-	cout << "type number of working zeh\n";
+	std::cout << "type number of working zeh\n";
 		y.workzeh = (Getcorrectnumber(1, y.zeh));
-	cout << "type efficiency  of  workzeh (1-10)\n";
+	std::cout << "type efficiency  of  workzeh (1-10)\n";
 		y.eff = (Getcorrectnumber(1, 10));
 	return in;
 }
-
+std::istream& operator>>(std::istream& in, Pipeline& x) //создание трубы
+{
+	x.remont = false;
+	std::cout << "type the length (m)\n";
+	x.length = Getcorrectnumber<double>(0, 1000);
+	std::cout << "type the diameter (mm) \n";
+	x.diametr = Getcorrectnumber<double>(0, 10000);
+	return in;
+}
 template<typename C>
 ostream& operator << (ostream& out, const vector<C>& object)// вектор 
 {
@@ -73,64 +81,12 @@ ifstream& operator >> (ifstream& in, vector<C>& object)
 	}
 	return in;
 }
-Pipeline inputPipeline()            //создание трубы
-{
-	Pipeline x;
-	x.ident = 0;
-	x.remont = false;
+           
 
-	cout << "type the length (m)\n";
-	do
-	{
-		cin.clear();
-		cin.ignore(1000, '\n');
-		cout << "type a numeric value: ";
-		cin >> x.length;
-	} while (cin.fail() || isNumber(x.length));
-	cout << "type the diameter (mm) \n";
-	do
-	{
-		cin.clear();
-		cin.ignore(1000, '\n');
-		cout << "type a numeric value: ";
-		cin >> x.diametr;
-	} while (cin.fail() || isNumber(x.diametr));
 
-	return x;
-}
-//KC inputkc()   //создание компрессорной станции пробел
-//{
-//	KC y;
-//	y.ident = 0;
-//	cout << "type name kc \n";
-//	cin >> y.name;
-//	cout << " type number of workshop \n";
-//	do
-//	{
-//		cin.clear();
-//		cin.ignore(1000, '\n');
-//		cout << "Type a numeric value: ";
-//		cin >> y.zeh;
-//	} while (cin.fail() || isNumber(y.zeh));
-//
-//	cout << "type number of working workshops\n";
-//	do
-//	{
-//		cin.clear();
-//		cin.ignore(1000, '\n');
-//		cout << "Type a numeric value: ";
-//		y.workzeh = (Getcorrectnumber(1, y.zeh));
-//	} while (cin.fail() || isNumber(y.workzeh));
-//	cout << "type efficiency  of  workshops (1-10)\n";
-//	do
-//	{
-//		cin.clear();
-//		cin.ignore(1000, '\n');
-//		cout << "Type a numeric value: ";
-//		y.eff = (Getcorrectnumber(1, 10));
-//	} while (cin.fail() || isNumber(y.eff));
-//	return y;
-//}
+	
+	
+
 void PrintPipeline(vector<Pipeline>& pv)
 {
 	for (Pipeline x : pv)
@@ -542,9 +498,8 @@ int main()
 		case 1:
 		{
 			Pipeline p;
-			p = inputPipeline();
+			cin >> p ;
 			pv.push_back(p);
-		
 			break;
 		}
 		case 2:
