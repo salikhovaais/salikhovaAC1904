@@ -15,37 +15,13 @@ bool isNumber(char Symbol)           //проверка цифра или нет
 	return false;
 }
 
-//template <typename T>
-//T Getcorrectnumber(T min, T max)//проверка на введение нужной цифры 
-//{
-//	int x;
-//	while ((cin >> x).fail() || x<min || x> max)
-//	{
-//		cin.clear();
-//		cin.ignore(1000, '\n');
-//		cout << "Type number (" << min << "-" << max << "):";
-//	}
-//	return x;
-//}
+
 
 std:: string checkRemont(Pipeline& p)//rename and class
 {
 	return (p.remont) ? "Unworking \n\n" : "Working \n\n";
 }
 
-
-
-
-	
-
-
-
-
-
-
-
-	
-	
 
 void SavePipeline(vector <Pipeline> pv)
 {
@@ -387,7 +363,7 @@ int main()
 				else cout << "there is no information about KC\n ";
 				break;
 			}
-
+		}
 		case 4:
 
 		{
@@ -443,4 +419,3 @@ int main()
 		return 0;
 	}
 
-}
