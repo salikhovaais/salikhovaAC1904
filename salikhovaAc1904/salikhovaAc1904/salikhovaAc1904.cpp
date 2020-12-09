@@ -54,34 +54,7 @@ std::istream& operator>>(std::istream& in, Pipeline& x) //создание тр�
 	x.diametr = Getcorrectnumber<double>(0, 10000);
 	return in;
 }
-template<typename C>
-ostream& operator << (ostream& out, const vector<C>& object)// вектор 
-{
-	for (const C& i : object)
-	{
-		out << i;
-	}
-	return out;
-}
-template<typename C>
-ofstream& operator << (ofstream& fout, const vector<C>& object)
-{
-	for (const C& c : object)
-	{
-		fout << c;
-	}
-	return fout;
-}
-template <typename C>
-ifstream& operator >> (ifstream& in, vector<C>& object)
-{
-	for (C& c : object)
-	{
-		in >> c;
-	}
-	return in;
-}
-           
+
 
 
 	
@@ -467,6 +440,25 @@ void SearchByFilterKC(vector<KC>& kv)
 		infoByFilterKC(kv, SearchByPercent, choice);
 	}
 }
+void Delete(vector <Pipeline>& pv, vector <KC>& kv)
+{
+	cout << "\nchoose what delete\n1.pipeline\n2.KC ";
+	int choice = Getcorrectnumber(1, 2);
+	if (choice == 1)
+	{
+		cout << "enter ID: ";
+		int ch = Getcorrectnumber(0, 100);
+		pv.erase(pv.begin() + ch);
+		cout << endl;
+	}
+	else
+	{
+		cout << "enter ID: ";
+		int ch = Getcorrectnumber(0, 100);
+		kv.erase(kv.begin() + ch);
+		cout << endl;
+	}
+}
 void PrintMenu()
 {
 	cout << "1. input pipeline" << endl
@@ -479,6 +471,7 @@ void PrintMenu()
 		<< "6. save to file" << endl
 		<< "7. load from file" << endl
 		<< "8. search by filter " << endl
+		<< "9. delete pipeline or KC " << endl
 		<< "0. exit" << endl
 		<< "choose action" << endl;
 
@@ -493,7 +486,7 @@ int main()
 	{
 		PrintMenu();
 
-		switch (Getcorrectnumber(0, 8))
+		switch (Getcorrectnumber(0, 9))
 		{
 		case 1:
 		{
@@ -512,7 +505,7 @@ int main()
 		case 3:
 		
 		{
-				cout << " choose what to show  1-pipe, 2- KC ";
+				cout << " choose what to show  1-pipeline, 2- KC ";
 				PrintAll( pv, kv);
 				break;
 		}
@@ -523,9 +516,6 @@ int main()
 			Editpipeline(pv);
 			break;
 		}
-		
-		
-
 		case 5:
 		
 		{
@@ -556,11 +546,17 @@ int main()
 				SearchByFilterKC(kv);
 			break;
 		}
+		case 9:
+		{
+			Delete(pv, kv);
+			break;
+		}
 		case 0:
 		{
 			return 0;
 
 		}
+
 		default:
 		{cout << "wrong action" << endl; }
 		}
