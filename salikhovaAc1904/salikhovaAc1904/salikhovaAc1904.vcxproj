@@ -144,6 +144,7 @@
     <ClCompile Include="salikhovaAc1904.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Header.h" />
     <ClInclude Include="KC.h" />
     <ClInclude Include="Pipeline.h" />
   </ItemGroup>

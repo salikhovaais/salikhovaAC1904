@@ -4,6 +4,7 @@
 #include <vector>
 #include "Pipeline.h"
 #include "KC.h"
+#include "Header.h"
 using namespace std;
 
 
@@ -31,48 +32,13 @@ std:: string checkRemont(Pipeline& p)//rename and class
 {
 	return (p.remont) ? "Unworking \n\n" : "Working \n\n";
 }
-std::istream& operator>>(std::istream& in, KC& y)
-{
-	
-	std::cout << "type name kc \n";
-	 cin.ignore();
-	getline(cin, y.name);
-	std::cout << " type number of zeh \n";
- y.zeh = Getcorrectnumber(0,1000);
-	std::cout << "type number of working zeh\n";
-		y.workzeh = (Getcorrectnumber(1, y.zeh));
-	std::cout << "type efficiency  of  workzeh (1-10)\n";
-		y.eff = (Getcorrectnumber(1, 10));
-	return in;
-}
-std::istream& operator>>(std::istream& in, Pipeline& x) //создание трубы
-{
-	x.remont = false;
-	std::cout << "type the length (m)\n";
-	x.length = Getcorrectnumber<double>(0, 1000);
-	std::cout << "type the diameter (mm) \n";
-	x.diametr = Getcorrectnumber<double>(0, 10000);
-	return in;
-}
+
 
 
 
 	
-	
 
-void PrintPipeline(vector<Pipeline>& pv)
-{
-	/*for (Pipeline x : pv)*/
-		cout << "select id you want to output: ";
-	int Outp;
-	cin >> Outp;
-	cout.precision(2);
-	cout << "\tPipe identification:" << pv[Outp].ident << endl << "length:" << pv[Outp].length
-		<< endl << "diametr:" << pv[Outp].diametr << endl
-		<< "remont: " << pv[Outp].remont << endl;
-	
 
-}
 void PrintKC(vector<KC>& kv)
 {
 	/*for (KC y : kv)*/
@@ -85,6 +51,17 @@ void PrintKC(vector<KC>& kv)
 		<< "quantity of workshop workers: " << kv[Outk].workzeh << endl
 		<< "efficiency: " << kv[Outk].eff << endl << endl;
 	
+}
+void PrintPipeline(vector<Pipeline>& pv)
+{
+	/*for (Pipeline x : pv)*/
+	cout << "select id you want to output: ";
+	int Outp;
+	cin >> Outp;
+	cout.precision(2);
+	cout <</* "\tPipe identification:" << pv[Outp].ident << endl*//* <<*/ "length:" << pv[Outp].length
+		<< endl << "diametr:" << pv[Outp].diametr << endl
+		<< "remont: " << pv[Outp].remont << endl;
 }
 void PrintAll(vector<Pipeline> pv, vector<KC> kv) // показать все
 {
@@ -168,7 +145,7 @@ void LoadAll(vector<Pipeline>& pv, vector<KC>& kv)
 	
 	
 
-void SavePipeline(vector<Pipeline>& pv) // сохр в файл трубу
+ void SavePipeline(vector<Pipeline>& pv) // сохр в файл трубу
 {
 	ofstream fout;
 	fout.open("pipe.txt", ios::out);
@@ -187,7 +164,6 @@ void SavePipeline(vector<Pipeline>& pv) // сохр в файл трубу
 				fout.close();
 			}
 		}
-
 	}
 }
 
