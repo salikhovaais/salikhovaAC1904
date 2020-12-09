@@ -112,7 +112,7 @@ void LoadKC(vector<KC>& kv)
 		kv.resize(lk);
 		for (KC& y : kv)
 		{
-			y.ident = 0;
+			
 			fin >> y.name;
 			fin >> y.zeh;
 			fin >> y.workzeh;

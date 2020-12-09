@@ -24,10 +24,24 @@ istream& operator>>(istream& in, Pipeline& x) //создание трубы
 
 ostream& operator <<(ostream& out, const Pipeline& x)
 {
-	out << "\t*Pipes*\n";
-	out << "the ID of the pipe: " << x.ident << endl;
+	out << "\tpipelines:\n";
+	out << "the ID of the pipeline: " << x.ident << endl;
 	out << "the length: " << x.length << endl;
-	out << "the diameter: " << x.diametr << endl;
-	(x.remont) ? out << "the pipe is under repair\n" : out << "the pipe works\n"; 
+	out << "the diametr: " << x.diametr << endl;
+	(x.remont) ? out << "pipeline is unworking\n" : out << " pipeline is working\n"; 
 	return out;
+}
+ifstream& operator>>(ifstream& fin, Pipeline& x)
+{
+	fin >> x.ident >> x.length >> x.diametr >> x.remont;
+	return fin;
+}
+ofstream& operator<<(std::ofstream& fout, const Pipeline& x)
+{
+	fout << x.ident<< endl << x.length << endl << x.diametr << endl << x.remont << endl;
+	return fout;
+}
+std::string checkRemont(const Pipeline& p)
+{
+	return (p.remont) ? "Unworking \n\n" : "Working \n\n";
 }
