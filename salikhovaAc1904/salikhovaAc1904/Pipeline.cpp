@@ -12,6 +12,11 @@ Pipeline::Pipeline()
 	ident = idP++;
 }
 
+int Pipeline::getID() const
+{
+	return ident;
+}
+
 istream& operator>>(istream& in, Pipeline& x) //создание pipiline
 {
 	

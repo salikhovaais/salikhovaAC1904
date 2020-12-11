@@ -5,15 +5,9 @@
 #include "Pipeline.h"
 #include "KC.h"
 #include "Header.h"
+#include <map>
 using namespace std;
 
-
-bool isNumber(char Symbol)           //проверка цифра или нет 
-{
-	if (Symbol >= '0' && Symbol <= '9')
-		return true;
-	return false;
-}
 
 
 
@@ -23,75 +17,10 @@ std:: string checkRemont(Pipeline& p)//rename and class
 }
 
 
-void SavePipeline(vector <Pipeline> pv)
-{
-	if (pv.size() != 0)
-		cout << "there is no  pipeline\n ";
-	else
-	{
-		ofstream fout;
-		fout.open("Pipeline.txt", ios::out);
-		if (fout.is_open())
-		{
-			fout << pv.size() << endl;
-			for (const auto& k : pv)
-				fout << k;
-			fout.close();
-		}
-	}
-}
-void SaveAll(vector <Pipeline>& pv, vector <KC>& kv)
-{
-	if ((pv.size() != 0) and (kv.size() != 0))
-		cout << "there is no pipeline and KC\n ";
-	else
-	{
-		ofstream fout;
-		fout.open("ALL.txt", ios::out);
-		if (fout.is_open())
-		{
-			fout << pv.size() << endl;
-			fout << kv.size() << endl;
-			for (const auto& p : pv)
-				fout << p;
-			for (const auto& k : kv)
-				fout << k;
-			fout.close();
-		}
-	}
-}
-void SaveKC( vector <KC> kv)
-{
-	if  (kv.size() != 0)
-		cout << "there is no  KC\n ";
-	else
-	{
-		ofstream fout;
-		fout.open("KC.txt", ios::out);
-		if (fout.is_open())
-		{
-			fout << kv.size() << endl;
-			for (const auto& k : kv)
-				fout << k;
-			fout.close();
-		}
-	}
-}
-void Save(int a, vector<Pipeline>& pv, vector<KC>& kv)
-{
-	switch (a)
-	{
-	case 1:
-		SavePipeline(pv);
-		break;
-	case 2:
-		SaveKC(kv);
-		break;
-	case 3:
-		SaveAll(pv, kv);
-		break;
-	}
-}
+
+
+
+
 void LoadAll(vector <Pipeline>& pv, vector <KC>& kv)
 {
 	ifstream fin;
@@ -110,7 +39,7 @@ void LoadAll(vector <Pipeline>& pv, vector <KC>& kv)
 
 void EditAllKC(vector<KC>& kv)
 {
-	cout << "\n0. Start the workshop\n1. Stop the workshop\nSelect - ";
+	cout << "\n0. add workzeh \n1. remove workzeh\n ";
 	int choice = Getcorrectnumber(0, 1);
 	cout << endl;
 	for (KC& i : kv)
@@ -195,7 +124,7 @@ void Editpipeline(vector<Pipeline>& pv)
 }
 bool SearchById(Pipeline& p, int param)
 {
-	return p.ident == param;
+	return p.getID() == param;
 }
 
 bool SearchByRepair(Pipeline& p, int param)
@@ -342,55 +271,105 @@ int main()
 		}
 		case 3:
 
+		
+
 		{
-			cout << " choose what to show  1-pipeline, 2- KC ";
-			int a;
-			a = Getcorrectnumber(1, 2);
-			switch (a)
-			{
-			case 1:
-				if (pv.size())
-				{
-					for (const auto& p : pv) cout << p << endl;
-				}
-				else cout << "there is no information about pipelines\n ";
-				break;
-			case 2:
-				if (kv.size())
-				{
-					for (const auto& k : kv) cout << k << endl;
-				}
-				else cout << "there is no information about KC\n ";
-				break;
-			}
+			if (pv.size())
+			
+				for (const auto& p : pv) cout << p << endl;
+
+			else cout << "there is no information about pipelines \n ";
+			if (kv.size())
+			for (const auto& k : kv) cout << k << endl;
+			else cout << "there is no information about KC\n ";
+			break;
 		}
 		case 4:
 
 		{
+			if (pv.size())
 			Editpipeline(pv);
+			else cout << "there is no information about pipelines \n ";
 			break;
 		}
 		case 5:
 
-		{
+		{if (kv.size())
 			EditKC(kv);
+		else cout << "there is no information about KC\n ";
 			break;
 		}
 
 		case 6:
 
+		 
 		{
-			cout << "choose what to save 1.pipeline \t2.kc  \t3.all";
-			int a;
-			a = Getcorrectnumber(1, 3);
-			Save(a, pv, kv);
-			break;
+			if ((pv.size() != 0) and (kv.size() != 0))
+				cout << "there is no pipeline and KC\n ";
+			else
+			{
+				ofstream fout;
+				string nameoffile;
+				cout << "type name of file";
+				cin.ignore();
+				getline(cin, nameoffile);
+				fout.open(nameoffile, ios::out);
+				if (fout.is_open())
+				{
+					fout << pv.size() << endl;
+					fout << kv.size() << endl;
+					for (const auto& p : pv)
+						fout << p;
+					for (const auto& k : kv)
+						fout << k;
+					fout.close();
+				}
+			}
+			break; 
 		}
+			
+			
 		case 7:
+		
 		{
-			LoadAll(pv, kv);
+			if ((pv.size() != 0) and (kv.size() != 0))
+				cout << "there is no pipeline and KC\n ";
+			else {
+				ifstream fin;
+				string nameoffile;
+
+				cout << "type name of file";
+				cin.ignore();
+				getline(cin, nameoffile);
+				fin.open(nameoffile, ios::in);
+				if (fin.is_open())
+
+				{
+					int count1;
+					int count2;
+					fin >> count1;
+					fin >> count2;
+					while (count1--)
+					{
+						Pipeline p;
+						fin >> p;
+
+					}
+					while (count2--)
+					{
+						KC k;
+						fin >> k;
+
+					}
+
+				}
+				else cout << "file is not found\n";
+				fin.close();
+			}
 			break;
 		}
+			
+		
 		case 8:
 		{
 			cout << "choose number to search by\n1.pipelines\n2.KC";
