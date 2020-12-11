@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include <vector>
+#include <unordered_map>
 class Pipeline
 {
 private:
@@ -14,7 +14,7 @@ public:
 	bool remont = false;
 	Pipeline();
 
-
+	void RedaktPipeline();
 	friend std::ostream& operator<<(std::ostream& out, const Pipeline& x);
 	friend std::istream& operator >>(std::istream& in, Pipeline& x);
 	friend std::ofstream& operator << (std::ofstream& fout, const Pipeline& x);

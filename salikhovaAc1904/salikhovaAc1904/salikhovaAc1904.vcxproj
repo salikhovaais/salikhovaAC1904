@@ -142,9 +142,11 @@
     <ClCompile Include="KC.cpp" />
     <ClCompile Include="Pipeline.cpp" />
     <ClCompile Include="salikhovaAc1904.cpp" />
+    <ClCompile Include="network.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Header.h" />
+    <ClInclude Include="network.h" />
+    <ClInclude Include="Utilus.h" />
     <ClInclude Include="KC.h" />
     <ClInclude Include="Pipeline.h" />
   </ItemGroup>

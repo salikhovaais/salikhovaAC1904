@@ -1,8 +1,8 @@
 #include "Pipeline.h"
 #include <iostream>
 #include <string>
-#include "Header.h"
-#include <vector>
+#include "Utilus.h"
+#include <unordered_map>
 using namespace std;
 
 int Pipeline::idP = 0;
@@ -50,4 +50,9 @@ ofstream& operator<<(std::ofstream& fout, const Pipeline& x)
 std::string checkRemont(const Pipeline& p)
 {
 	return (p.remont) ? "Unworking \n\n" : "Working \n\n";
+}
+void Pipeline::RedaktPipeline()
+{
+	remont = !remont;
+	cout << "the pipe's status is changed";
 }
