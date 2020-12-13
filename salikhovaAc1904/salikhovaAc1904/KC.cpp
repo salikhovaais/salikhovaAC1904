@@ -11,6 +11,12 @@ KC::KC()
 
 	ident = idK++;
 
+
+}
+int KC::getID() const
+{
+	return ident;
+
 }
 
 istream& operator>>(istream& in, KC& y) //создание KC
@@ -51,3 +57,29 @@ ofstream& operator<<(std::ofstream& fout, const KC& y)
 	return fout;
 }
 
+void KC::RedaktKC()
+{
+	cout << "do you want to change the number of working zeh?\n";
+	char i;
+	cin >> i;
+	while (i != 'yes' && i != 'no')
+	{
+		cout << " enter yes or no : ";
+		cin >> i;
+	}
+	switch (i)
+	{
+	case 'yes':
+	{
+		cout << "enter the number of working zeh: ";
+		int vsego = zeh;
+		workzeh = Getcorrectnumber(0, vsego);
+		cout << "the information is changed \n";
+		break;
+	}
+	case 'no':
+	{
+		break;
+	}
+	}
+}

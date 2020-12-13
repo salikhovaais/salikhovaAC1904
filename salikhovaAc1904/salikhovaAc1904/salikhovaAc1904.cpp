@@ -18,31 +18,53 @@ std:: string checkRemont(Pipeline& p)//rename and class
 }
 
 
-
-void EditAllKC(unordered_map<int, KC>& kv)
+bool SearchById(Pipeline& p, int param)
 {
-	cout << "\n0. add workzeh \n1. remove workzeh\n ";
-	int choice = Getcorrectnumber(0, 1);
-	cout << endl;
-	for ( KC& i : kv)
-	{
-		if (choice == 0 && (i.zeh > i.workzeh))
-		{
-			i.workzeh += 1;
-		}
-		else if (i.workzeh > 0)
-		{
-			i.workzeh -= 1;
-		}
-	}
-	
+	return p.getID() == param;
 }
+
+bool SearchByRepairr(const Pipeline& p, bool  repair)
+{
+	return p.remont == repair;
+}
+bool SearchByRepair(const Pipeline& p, int param)
+{
+	return p.remont == param-1;
+}
+bool SearchByName(KC& k, string name)
+{
+	return k.name == name;
+}
+bool SearchByPercent(KC& kv, int param)
+{
+	return 100 * (1 - (1. * kv.workzeh) / kv.zeh) >= param;
+}
+template <typename W, typename T>
+using Filter = bool(*)(const W& o, T param);
+template <typename W, typename T>
+vector<int> FindItemsByFilter(const unordered_map <int, W>& g, Filter <W, T> f, T param)
+{
+	vector<int>res;
+	int i = 0;
+	for (const auto& obj : g)
+	{
+		if (f(obj.second, param))
+			res.push_back(i);
+		i++;
+	}
+	if (res.size() == 0)
+	{
+		cout << "error\n";
+	}
+	return res;
+}
+
 void EditOneKC(unordered_map<int, KC>& kv)
 {
-	cout << "id of the KC you want to edit: ";
+	cout << "type the ID of  KC that you want to edit: ";
 	int k;
-	cin >> k;
-	cout << "\n0. start the working zeh\n1. stop the working zeh\n ";
+	 k=Getcorrectnumber(0,1000);
+	cout << "\n0. add the working zeh\n1. remove the working zeh\n ";
 	if (Getcorrectnumber(0, 1) == 0)
 	{
 		if (kv[k].zeh > kv[k].workzeh)
@@ -55,99 +77,61 @@ void EditOneKC(unordered_map<int, KC>& kv)
 	}
 	
 }
-void EditKC(unordered_map<int, KC>& kv)
+
+
+
+void EditPackPipeline(unordered_map<int, Pipeline>& pv)
 {
-	cout << "choose\n1. edit all KC\n2. edit one KC\n";
-	if (Getcorrectnumber(1, 2) == 1)
+	cout << "choose by what edit pipelines" << endl;
+	cout << "\n1. pipelines wich working \n2. pipelines wich repairing\n3.by ID";
+	switch (Getcorrectnumber(1, 3))
 	{
-		cout << endl;
-		EditAllKC(kv);
+	case 1:
+	{
+		for (int i : FindItemsByFilter(pv, SearchByRepairr, false))
+			pv.find(i)->second.RedaktPipeline();
 	}
-	else
+	case 2:
 	{
-		cout << endl;
-		EditOneKC(kv);
+		for (int i : FindItemsByFilter(pv, SearchByRepairr, true))
+			pv.find(i)->second.RedaktPipeline();
+	}
+	case 3:
+	{vector<int> v;
+	while (1)
+	{
+		cout << "type id you want to edit: ";
+		v.push_back(Getcorrectnumber(0, 1000));
+		cout << "add more pipeline to edit? " << endl << "\t0.add\n1.no";
+		if (Getcorrectnumber(0, 1) == 1)
+			break;
+	} for (auto i : v)
+	{
+		if (pv.find(i) != pv.end())
+			pv.find(i)->second.RedaktPipeline();
+	}
+	break;
+
+
+	}
 	}
 }
-//void EditAllPipeline(unordered_map< int, Pipeline>& pv)
+
+
+
+
+
+//template <typename T>
+//bool del(unordered_map<int, T>& pv, int ident)
 //{
-//	cout << "choose\n0. pipelines working\n1. pipelines  repairing\n";
-//	int choice = Getcorrectnumber(0, 1);
-//	cout << endl;
-//	for ( Pipeline& i : pv)/*nordered_map<int, Pipeline>::iterator got = Pipeline_s.find(choice);*/
-//	//		if (got == Pipeline_s.end())
-//	{
-//		i.remont = choice;
-//	}
+//	return pv.erase(ident);
 //}
 
-unordered_map<int, Pipeline> EditOnePipeline(unordered_map<int, Pipeline>& pv)
-{
-	cout << "type id you want to edit: ";
-	int n;
-	n = Getcorrectnumber(0,1000);
-	cout << "\nchoose\n0. pipe not repairing \n1. pipe in repairing";
-	int choice = Getcorrectnumber(0, 1);
-	pv[n].remont = choice;
-	cout << endl;
-	return pv;
-}
-//void PackEditPipeline(unordered_map<int, Pipeline>& pv ) 
-//{
-//	cout << "edit pipeline by\n" << endl
-//		<< "1.unworking\n" << endl
-//		<< "2.working\n" << endl
-//		<< "3.by ID" << endl;
-//	switch (Getcorrectnumber(1,3))
-//	{
-//	case 1:
-//		for (int i : )
 
-
-
-
-
-template <typename T>
-bool del(unordered_map<int, T>& pv, int ident)
-{
-	return pv.erase(ident);
-}
-
-void Editpipeline(unordered_map<int, Pipeline>& pv)
-{  
-	cout << "\nchoose\n1. edit all  pipelines\n2. edit one pipeline ";
-	if (Getcorrectnumber(1, 2) == 1)
-	{
-		cout << endl;
-		EditAllPipeline(pv);
-	}
-	else
-	{
-		cout << endl;
-		EditOnePipeline(pv);
-	}
-}
-bool SearchById(Pipeline& p, int param)
-{
-	return p.getID() == param;
-}
-
-bool SearchByRepair(Pipeline& p, int param)
-{
-	return p.remont == param - 1;
-}
-bool SearchByName(KC& k, string name)
-{
-	return k.name == name;
-}
-bool SearchByPercent(KC& kv, int param)
-{
-	return 100 * (1 - (1. * kv.workzeh) / kv.zeh) >= param;
-}
 template <typename N>
 void infoFilterPipeline(unordered_map<int, Pipeline>& pv, bool(*f)(Pipeline& p, N param), N param)
 {
-	for (Pipeline& i : vect)
+	for (Pipeline& i : pv)
 	{
 		if (f(i, param))
 		{
@@ -163,11 +147,10 @@ void infoFilterPipeline(unordered_map<int, Pipeline>& pv, bool(*f)(Pipeline& p, 
 template< typename N>
 void infoFilterKC(unordered_map<int, KC>& kv, bool(*f)(KC& p, N param), N param)
 {
-	for ( KC& i : vect)
+	for ( KC& i : kv)
 	{
 		if (f(i, param))
 		{
-			cout.precision(2);
 			cout << "\nKC id: " << i.ident << endl 
 				<< "name: " << i.name << endl
 				<< "quantity of zeh: " << i.zeh << endl
@@ -178,26 +161,7 @@ void infoFilterKC(unordered_map<int, KC>& kv, bool(*f)(KC& p, N param), N param)
 	}
 	cout << endl;
 }
-void SearchByFilterPipeline(unordered_map<int, Pipeline>& pv)// показ труб по филтру
-{
-	cout << "\nchoose by what\n1.ID\n2.working or no\n ";
-	if (Getcorrectnumber(1, 2) == 1)
-	{
-		cout << "Enter ID: ";
-		int ch = Getcorrectnumber(0, 100);
-		infoFilterPipeline(pv, SearchById, ch);
-	}
-	else
-	{
-		cout << "\nchoose \n1. working\n2. unworking ";
-		int choice = Getcorrectnumber(1, 2);
-		infoFilterPipeline(pv, SearchByRepair, choice);
-		cout << "\nedit this pipelines? \n1. yes\n2. no ";
-		if  (Getcorrectnumber(1, 2)==1)
-			/////////////////////////////////////////////////////////////////////////////////////////////
 
-	}
-}
 void SearchByFilterKC(unordered_map<int, KC>& kv)
 {
 	cout << "\nchoose by what\n1.name\n" << "2.percentage of unused workzeh";
@@ -216,23 +180,66 @@ void SearchByFilterKC(unordered_map<int, KC>& kv)
 		infoFilterKC(kv, SearchByPercent, choice);
 	}
 }
-void Delete(unordered_map<int,network>& pv, unordered_map<int, network>& kv)
+
+void DelPipes(unordered_map<int, Pipeline>& pipes_p)
 {
-	cout << "\nchoose what delete\n1.pipeline\n2.KC ";
-	int choice = Getcorrectnumber(1, 2);
-	if (choice == 1)
+	if (pipes_p.size() != 0)
 	{
-		cout << "enter ID: ";
-		int ch = Getcorrectnumber(0, 100);
-		
-		cout << endl;
+		cout << "enter an ID of the pipe you want to delete: ";
+		int i;
+		cin >> i;
+		if (pipes_p.find(i) != pipes_p.end())
+			pipes_p.erase(i);
+		cout << "the pipe is deleted";
 	}
 	else
 	{
-		cout << "enter ID: ";
-		int ch = Getcorrectnumber(0, 100);
-		kv.erase(kv.begin() + ch);
-		cout << endl;
+		cout << "error\n";
+	}
+}
+
+void DelKC(unordered_map <int, KC>& kc_k)
+{
+	if (kc_k.size() != 0)
+	{
+		cout << "enter the ID of the KC you want to delete: ";
+		int t;
+		cin >> t;
+		if (kc_k.find(t) != kc_k.end())
+			kc_k.erase(t);
+		cout << "the KC is deleted";
+	}
+	else
+	{
+		cout << "error\n";
+	}
+}
+void SearchByFilterPipeline(unordered_map<int, Pipeline>& pv)// показ труб по филтру
+{
+	cout << "\nchoose by what\n1.ID\n2.working or no\n ";
+	if (Getcorrectnumber(1, 2) == 1)
+	{
+		cout << "Enter ID: ";
+		int ch = Getcorrectnumber(0, 1000);
+		infoFilterPipeline(pv, SearchById, ch);
+	}
+	else
+	{
+
+			cout << "1. find working pipes" << endl
+				<< "2. find not working pipes" << endl;
+			if (Getcorrectnumber(1, 2) == 1) {
+				for (int i : FindItemsByFilter(pv, SearchByRepairr, false))
+					cout << pv[i + 1];
+			}
+			else
+			{
+				for (int i : FindItemsByFilter(pv, SearchByRepairr, true))
+					cout << pv[i + 1];
+			}
+		
+		
+	
 	}
 }
 void PrintMenu()
@@ -267,16 +274,17 @@ int main()
 		{
 		case 1:
 		{
+			
 			Pipeline p;
 			cin >> p;
-			pv.push_back(p);
+			pv.insert(pair<int, Pipeline>(p.getID(), p));
 			break;
 		}
 		case 2:
 		{
 			KC k;
 			cin >> k;
-			kv.push_back(k);
+			kv.insert(pair<int, KC>(k.getID(), k));
 			break;
 		}
 		case 3:
@@ -284,11 +292,11 @@ int main()
 		{
 			if (pv.size())
 			
-				for (const auto& p : pv) cout << p << endl;
+				for (const auto& p : pv) cout << p.second << endl;
 
 			else cout << "there is no information about pipelines \n ";
 			if (kv.size())
-			for (const auto& k : kv) cout << k << endl;
+			for (const auto& k : kv) cout << k.second << endl;
 			else cout << "there is no information about KC\n ";
 			break;
 		}
@@ -296,17 +304,23 @@ int main()
 
 		{
 			if (pv.size())
-			Editpipeline(pv);
+			EditPackPipeline(pv);
 			else cout << "there is no information about pipelines \n ";
 			break;
 		}
 		case 5:
 
 		{if (kv.size())
-			EditKC(kv);
-		else cout << "there is no information about KC\n ";
-			break;
+		{
+			cout << "please enter an ID of the KC you want to edit: ";
+			int n;
+			cin >> n;
+			kv[n].RedaktKC();
 		}
+		else 
+			cout << "there is no information about KC\n ";
+			
+		}break;
 
 		case 6:
 
@@ -381,19 +395,26 @@ int main()
 		
 		case 8:
 		{
-			cout << "choose number to search by\n1.pipelines\n2.KC";
-			if (Getcorrectnumber(1, 2) == 1)
+			cout << "choose number to search \n1.pipelines by status\n2.KC";
+			if (Getcorrectnumber(1,2) == 1)
 				SearchByFilterPipeline(pv);
 			else
 				SearchByFilterKC(kv);
 			break;
 		}
 		case 9:
-		{ int a;
-		cout << "type the number of pipeline to delete" << endl;
-			a = Getcorrectnumber(0, 10000);
-			del(pv);
-			break;
+		{  cout << "1. Pipelines" << endl
+			<< "2. KC" << endl
+			<< "please choose what you want to delete: ";
+		if (Getcorrectnumber(1, 2) == 1)
+		{
+			DelPipes(pv);
+		}
+		else
+		{
+			DelKC(kv);
+		}
+		break;
 		}
 		case 0:
 		{

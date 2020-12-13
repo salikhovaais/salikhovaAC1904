@@ -21,7 +21,9 @@ public:
 	friend std::istream& operator >>(std::istream& in, KC& x);
 	friend std::ofstream& operator << (std::ofstream& fout, const KC& x);
 	friend std::ifstream& operator >> (std::ifstream& fin, KC& x);
-	/*friend bool SearchById(KC& p, int param);*/
-
+	friend bool SearchById(KC& p, int param);
+	int getID()const;
+	void RedaktKC();
+	
 };
 
