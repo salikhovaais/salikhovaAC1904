@@ -14,15 +14,14 @@ public:
 	bool remont = false;
 	Pipeline();
 
+
 	void RedaktPipeline();
 	friend std::ostream& operator<<(std::ostream& out, const Pipeline& x);
 	friend std::istream& operator >>(std::istream& in, Pipeline& x);
 	friend std::ofstream& operator << (std::ofstream& fout, const Pipeline& x);
 	friend std::ifstream& operator >> (std::ifstream& fin, Pipeline& x);
-	/*friend bool SearchById(Pipeline& p, int param);*/
 	int getID()const;
 	
-	/*template <typename N>*/
+	
 
-	/*friend void infoFilterPipeline(vector<Pipeline>& vect, bool(*f)(Pipeline& p, int param), int param);*/
 };

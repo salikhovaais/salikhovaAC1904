@@ -7,6 +7,7 @@ using namespace std;
 
 int Pipeline::idP = 0;
 
+
 Pipeline::Pipeline()
 {
 	ident = idP++;

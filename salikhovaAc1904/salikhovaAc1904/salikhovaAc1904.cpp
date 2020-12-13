@@ -121,12 +121,6 @@ void EditPackPipeline(unordered_map<int, Pipeline>& pv)
 
 
 
-//template <typename T>
-//bool del(unordered_map<int, T>& pv, int ident)
-//{
-//	return pv.erase(ident);
-//}
-
 
 template <typename N>
 void infoFilterPipeline(unordered_map<int, Pipeline>& pv, bool(*f)(Pipeline& p, N param), N param)
