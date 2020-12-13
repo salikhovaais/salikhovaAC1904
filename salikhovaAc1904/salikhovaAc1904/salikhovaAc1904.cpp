@@ -9,33 +9,29 @@
 #include <unordered_map>
 using namespace std;
 
-
-
-
-std:: string checkRemont(Pipeline& p)//rename and class
+string EnterName()
 {
-	return (p.remont) ? "Unworking \n\n" : "Working \n\n";
+	string filename;
+	cout << "\nplease enter a name for the KC: ";
+	cin.ignore(1000, '\n');
+	getline(cin, filename);
+	return filename;
 }
-
-
 bool SearchById(Pipeline& p, int param)
 {
 	return p.getID() == param;
 }
 
-bool SearchByRepairr(const Pipeline& p, bool  repair)
-{
-	return p.remont == repair;
-}
+
 bool SearchByRepair(const Pipeline& p, int param)
 {
 	return p.remont == param-1;
 }
-bool SearchByName(KC& k, string name)
+bool SearchByName(const KC& k, string name)
 {
 	return k.name == name;
 }
-bool SearchByPercent(KC& kv, int param)
+bool SearchByPercent(const KC& kv, double param)
 {
 	return 100 * (1 - (1. * kv.workzeh) / kv.zeh) >= param;
 }
@@ -63,7 +59,7 @@ void EditOneKC(unordered_map<int, KC>& kv)
 {
 	cout << "type the ID of  KC that you want to edit: ";
 	int k;
-	 k=Getcorrectnumber(0,1000);
+	 k=Getcorrectnumber(0,KC::GetidK());
 	cout << "\n0. add the working zeh\n1. remove the working zeh\n ";
 	if (Getcorrectnumber(0, 1) == 0)
 	{
@@ -88,12 +84,12 @@ void EditPackPipeline(unordered_map<int, Pipeline>& pv)
 	{
 	case 1:
 	{
-		for (int i : FindItemsByFilter(pv, SearchByRepairr, false))
+		for (int i : FindItemsByFilter(pv, SearchByRepair, 0))
 			pv.find(i)->second.RedaktPipeline();
 	}
 	case 2:
 	{
-		for (int i : FindItemsByFilter(pv, SearchByRepairr, true))
+		for (int i : FindItemsByFilter(pv, SearchByRepair, 1))
 			pv.find(i)->second.RedaktPipeline();
 	}
 	case 3:
@@ -101,7 +97,7 @@ void EditPackPipeline(unordered_map<int, Pipeline>& pv)
 	while (1)
 	{
 		cout << "type id you want to edit: ";
-		v.push_back(Getcorrectnumber(0, 1000));
+		v.push_back(Getcorrectnumber(0, Pipeline::GetidP()));
 		cout << "add more pipeline to edit? " << endl << "\t0.add\n1.no";
 		if (Getcorrectnumber(0, 1) == 1)
 			break;
@@ -111,8 +107,6 @@ void EditPackPipeline(unordered_map<int, Pipeline>& pv)
 			pv.find(i)->second.RedaktPipeline();
 	}
 	break;
-
-
 	}
 	}
 }
@@ -121,59 +115,6 @@ void EditPackPipeline(unordered_map<int, Pipeline>& pv)
 
 
 
-
-template <typename N>
-void infoFilterPipeline(unordered_map<int, Pipeline>& pv, bool(*f)(Pipeline& p, N param), N param)
-{
-	for (Pipeline& i : pv)
-	{
-		if (f(i, param))
-		{
-			cout << endl << "Pipeline id: "
-				<< i.ident << endl 
-				<< "diametr: " << i.diametr << endl
-				<< "length: " << i.length <<endl 
-				<< "pipe working: " << checkRemont(i);
-		}
-	}
-	cout << endl;
-}
-template< typename N>
-void infoFilterKC(unordered_map<int, KC>& kv, bool(*f)(KC& p, N param), N param)
-{
-	for ( KC& i : kv)
-	{
-		if (f(i, param))
-		{
-			cout << "\nKC id: " << i.ident << endl 
-				<< "name: " << i.name << endl
-				<< "quantity of zeh: " << i.zeh << endl
-				<< "quantity of working zeh: " << i.workzeh << endl
-				<< "efficiency: " << i.eff << endl
-				<< endl;
-		}
-	}
-	cout << endl;
-}
-
-void SearchByFilterKC(unordered_map<int, KC>& kv)
-{
-	cout << "\nchoose by what\n1.name\n" << "2.percentage of unused workzeh";
-	if (Getcorrectnumber(1, 2) == 1)
-	{
-		int counter = 0;
-		cout << "\ntype a name : ";
-		string name;
-		cin >> name;
-		infoFilterKC(kv, SearchByName, name);
-	}
-	else
-	{
-		cout << "\ntype the number of percentages - ";
-		int choice = Getcorrectnumber(0, 100);
-		infoFilterKC(kv, SearchByPercent, choice);
-	}
-}
 
 void DelPipes(unordered_map<int, Pipeline>& pipes_p)
 {
@@ -208,34 +149,7 @@ void DelKC(unordered_map <int, KC>& kc_k)
 		cout << "error\n";
 	}
 }
-void SearchByFilterPipeline(unordered_map<int, Pipeline>& pv)// показ труб по филтру
-{
-	cout << "\nchoose by what\n1.ID\n2.working or no\n ";
-	if (Getcorrectnumber(1, 2) == 1)
-	{
-		cout << "Enter ID: ";
-		int ch = Getcorrectnumber(0, 1000);
-		infoFilterPipeline(pv, SearchById, ch);
-	}
-	else
-	{
 
-			cout << "1. find working pipes" << endl
-				<< "2. find not working pipes" << endl;
-			if (Getcorrectnumber(1, 2) == 1) {
-				for (int i : FindItemsByFilter(pv, SearchByRepairr, false))
-					cout << pv[i + 1];
-			}
-			else
-			{
-				for (int i : FindItemsByFilter(pv, SearchByRepairr, true))
-					cout << pv[i + 1];
-			}
-		
-		
-	
-	}
-}
 void PrintMenu()
 {
 	cout << "1. input pipeline" << endl
@@ -390,10 +304,34 @@ int main()
 		case 8:
 		{
 			cout << "choose number to search \n1.pipelines by status\n2.KC";
-			if (Getcorrectnumber(1,2) == 1)
-				SearchByFilterPipeline(pv);
+			if (Getcorrectnumber(1, 2) == 1)
+			{
+				cout << "1. find working pipelines" << endl
+					<< "2. find not working pipelines(remont)" << endl;
+				if (Getcorrectnumber(1, 2) == 1) {
+					for (int i : FindItemsByFilter(pv, SearchByRepair, 0))
+						cout << pv[i + 1];
+				}
+				else
+				{
+					for (int i : FindItemsByFilter(pv, SearchByRepair, 1))
+						cout << pv[i + 1];
+				}
+			}
 			else
-				SearchByFilterKC(kv);
+				cout << "\nchoose by what\n1.name\n" << "2.percentage of unused workzeh";
+			if (Getcorrectnumber(1, 2) == 1)
+			{
+				
+				for (int i : FindItemsByFilter(kv, SearchByName, EnterName()))
+					cout << kv[i + 1];
+			}
+			else
+			{
+				cout << "\ntype the number of percentages - ";
+				for (int i : FindItemsByFilter(kv, SearchByPercent, Getcorrectnumber(0.00, 100.0)))
+				cout << kv[ i  + 1];
+			}
 			break;
 		}
 		case 9:

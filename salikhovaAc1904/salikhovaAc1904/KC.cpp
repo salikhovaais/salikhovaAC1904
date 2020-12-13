@@ -6,13 +6,18 @@
 using namespace std;
 
 int KC::idK = 0;//уникальная идентификация станций
+static int idK;
 KC::KC()
 {
 
 	ident = idK++;
 
-
 }
+int KC::GetidK()
+{
+	return idK;
+}
+
 int KC::getID() const
 {
 	return ident;

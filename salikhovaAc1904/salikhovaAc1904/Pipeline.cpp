@@ -12,7 +12,10 @@ Pipeline::Pipeline()
 {
 	ident = idP++;
 }
-
+int Pipeline::GetidP()
+{
+	return idP;
+}
 int Pipeline::getID() const
 {
 	return ident;

@@ -13,7 +13,7 @@ public:
 	double diametr = 0;
 	bool remont = false;
 	Pipeline();
-
+	static int GetidP();
 
 	void RedaktPipeline();
 	friend std::ostream& operator<<(std::ostream& out, const Pipeline& x);

@@ -11,7 +11,7 @@ private:
 	int ident;
 	static int idK;
 public:
-
+	static int GetidK();
 	std::string name;
 	int zeh = 0;; // кол-во цехов
 	int workzeh = 0;; // кол-во работающих цех
