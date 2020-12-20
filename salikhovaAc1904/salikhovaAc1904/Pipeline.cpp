@@ -20,6 +20,25 @@ int Pipeline::getID() const
 {
 	return ident;
 }
+void Pipeline::setinputks(unsigned int value)
+{
+	inputks = value;
+}
+
+void Pipeline::setoutputks(unsigned int value)
+{
+	outputks = value;
+}
+
+unsigned int Pipeline::getinputks()
+{
+	return inputks;
+}
+
+unsigned int Pipeline::getoutputks()
+{
+	return outputks;
+}
 
 istream& operator>>(istream& in, Pipeline& x) //создание pipiline
 {
