@@ -17,10 +17,10 @@ string EnterName()
 	getline(cin, filename);
 	return filename;
 }
-bool SearchById(Pipeline& p, int param)
-{
-	return p.getID() == param;
-}
+//bool SearchById(Pipeline& p, int param)
+//{
+//	return p.getID() == param;
+//}
 
 bool SearchByRepair(const Pipeline& p, int param)
 {
@@ -58,7 +58,7 @@ void EditOneKC(unordered_map<int, KC>& kv)
 {
 	cout << "type the ID of  KC that you want to edit: ";
 	int k;
-	 k=Getcorrectnumber(0,KC::GetidK());
+	 k=Getcorrectnumber(1,KC::GetidK());
 	cout << "\n0. add the working zeh\n1. remove the working zeh\n ";
 	if (Getcorrectnumber(0, 1) == 0)
 	{
@@ -96,7 +96,7 @@ void EditPackPipeline(unordered_map<int, Pipeline>& pv)
 	while (1)
 	{
 		cout << "type id you want to edit: ";
-		v.push_back(Getcorrectnumber(0, Pipeline::GetidP()));
+		v.push_back(Getcorrectnumber(1, Pipeline::GetidP()));
 		cout << "add more pipeline to edit? " << endl << "\t0.add\n1.no";
 		if (Getcorrectnumber(0, 1) == 1)
 			break;
@@ -212,14 +212,24 @@ int main()
 		case 3:
 
 		{
-			if (pv.size())
-			
-				for (const auto& p : pv) cout << p.second << endl;
+			if (pv.size() > 0)
 
-			else cout << "there is no information about pipelines \n ";
-			if (kv.size())
-			for (const auto& k : kv) cout << k.second << endl;
-			else cout << "there is no information about KC\n ";
+				for (const auto& p : pv)
+				{
+					cout << p.second << endl;
+				}
+
+			else
+			{
+				cout << "there is no information about pipelines \n ";
+			}
+			if (kv.size() > 0)
+				for (const auto& k : kv)
+				{cout << k.second << endl; }
+			else
+			{
+				cout << "there is no information about KC, impossible to create network\n ";
+			}
 			break;
 		}
 		case 4:
@@ -249,8 +259,6 @@ int main()
 		 
 		{
 			if ((pv.size() != 0) and (kv.size() != 0))
-				cout << "there is no pipeline and KC\n ";
-			else
 			{
 				ofstream fout;
 				string nameoffile;
@@ -271,18 +279,40 @@ int main()
 						fout << k.second;
 					}
 					fout.close();
-				} 
+				}break;
 			}
-			break; 
-		}
+				
+			else
+			{
+				cout << "there is no pipeline and KC\n ";
+			}
 			
+		
+			if (network.getidks().size() > 0 || network.getidt().size() > 0)
+			{
+				ofstream fout;
+				fout.open("gts.txt", ios::out);
+				if (fout.is_open())
+				{
+					fout << network.getidt().size() << endl;
+					fout << network.getidks().size() << endl;
+					network.savefilenetwork(fout);
+					fout.close();
+				}
+				break;
+			}
+			else
+			{
+				cout << "there is no network\n";
+				break;
+			}
+		}
 			
 		case 7:
 		
 		{
-			if ((pv.size() != 0) and (kv.size() != 0))
-				cout << "there is no pipeline and KC\n ";
-			else {
+			
+			 {
 				ifstream fin;
 				string nameoffile;
 				cout << "type name of file";
@@ -299,6 +329,8 @@ int main()
 					while (count1--)
 					{
 						Pipeline p;
+						p.inputfilepipe(fin);
+						/*pv[i] = p;*/
 						fin >> p;
 					}
 					while (count2--)
@@ -310,6 +342,32 @@ int main()
 				}
 				else cout << "file is not found\n";
 				fin.close();
+			}
+			ifstream fin2;
+			fin2.open("gts.txt", ios::in);
+			if (fin2.is_open())
+			{
+				int countidt;
+				int countidks;
+				fin2 >> countidt;
+				fin2 >> countidks;
+				if (countidt > 0)
+				{
+					for (int i = 0; i < countidt; i++)
+					{
+						int n = network.inputfilenetwork(fin2);
+						network.setidt(n);
+					}
+				}
+				if (countidks > 0)
+				{
+					for (int i = 0; i < countidks; i++)
+					{
+						int n = network.inputfilenetwork(fin2);
+						network.setidks(n);
+					}
+				}
+				fin2.close();
 			}
 			break;
 		}
@@ -377,12 +435,12 @@ int main()
 				int k = 1;
 				for (auto& i : sortedmatrix)
 				{
-					cout << "top" << k << "--> id=" << i << endl;
+					cout <<  k << "wich  ID :" << i << endl;
 					k += 1;
 				}
 			}
 			else
-				cout << "cycle\n";
+				cout << "there is cycle\n";
 			break;
 		}
 		case 0:
