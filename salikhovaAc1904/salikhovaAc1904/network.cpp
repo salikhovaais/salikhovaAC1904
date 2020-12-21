@@ -4,7 +4,7 @@
 #include<vector>
 #include "KC.h"
 
-void network :: editnetwork (unordered_map <int, Pipeline>& Truboprovod)
+void network :: editnetwork (unordered_map <int, Pipeline>& pv)
 {
 	while (true)
 	{
@@ -15,32 +15,32 @@ void network :: editnetwork (unordered_map <int, Pipeline>& Truboprovod)
 		{
 		case 1:
 		{cout << "type 1 KC ID";
-			unsigned int ks = Getcorrectnumber(0, KC::GetidK());
+			unsigned int ks = Getcorrectnumber(1, KC::GetidK());//1 KC
 			idks.insert(ks);
 			unsigned int t;
 			while (true)
 			{
 				cout << "type pipe  ID ";
-				t = Getcorrectnumber(0, Pipeline::GetidP());//
-				if (Truboprovod[t].getinputks() == 0 && Truboprovod[t].getoutputks() == 0)
+				t = Getcorrectnumber(1, Pipeline::GetidP());//pipeconnect
+				if (pv[t].getinputks() == 0 && pv[t].getoutputks() == 0)
 					break;
 				else
 					cout << "this pipe already using \n";
 			}
 			idt.insert(t);
-			Truboprovod[t].setinputks(ks);
+			pv[t].setinputks(ks);
 			unsigned int ks1;
 			while (true)
 			{
 				cout << "type 2 KC ID";
-				ks1 = Getcorrectnumber(0, KC::GetidK());//2 KC
+				ks1 = Getcorrectnumber(1, KC::GetidK());//2 KC
 				if (ks1 != ks)
 					break;
 				else
-					cout << "one KC can not be output and input";
+					cout << "one KC can not be output and input\n";
 			}
 			idks.insert(ks1);
-			Truboprovod[t].setoutputks(ks1);
+			pv[t].setoutputks(ks1);
 			break;
 		}
 		case 0:
@@ -99,7 +99,7 @@ void network::deletematrix(int n)
 	delete[] matrix;
 }
 
-void network::editmatrix(unordered_map<int, Pipeline>& Truboprovod)
+void network::editmatrix(unordered_map<int, Pipeline>& pv)
 {
 	vector<unsigned int> sortedidks;
 	for (auto& v : idks)
@@ -107,7 +107,7 @@ void network::editmatrix(unordered_map<int, Pipeline>& Truboprovod)
 		sortedidks.push_back(v);
 	}
 	int n = idks.size();
-	for (auto& infotruba : Truboprovod)
+	for (auto& infotruba : pv)
 	{
 		int first = -1;
 		int second = -1;
@@ -126,7 +126,7 @@ void network::editmatrix(unordered_map<int, Pipeline>& Truboprovod)
 	}
 }
 
-vector<unsigned int> network::tgtssort(unordered_map<int, Pipeline>& Truboprovod)
+vector<unsigned int> network::tgtssort(unordered_map<int, Pipeline>& pv)
 {
 	vector<unsigned int> sorted;
 	vector<unsigned int> vks;
@@ -136,7 +136,7 @@ vector<unsigned int> network::tgtssort(unordered_map<int, Pipeline>& Truboprovod
 	}
 	int n = idks.size();
 	matrix = creatematrix(n);
-	editmatrix(Truboprovod);
+	editmatrix(pv);
 	for (int k = 0; k < n; k++)
 	{
 		for (int i = 0; i < n; i++)
@@ -153,7 +153,7 @@ vector<unsigned int> network::tgtssort(unordered_map<int, Pipeline>& Truboprovod
 				{
 					matrix[j][i] = 0;
 				}
-				matrix[i][i] = 1;
+				matrix[i][i] = 1 ;
 			}
 		}
 	}
@@ -162,6 +162,7 @@ vector<unsigned int> network::tgtssort(unordered_map<int, Pipeline>& Truboprovod
 		for (int j = 0; j < n; j++)
 		{
 			cout << matrix[i][j];
+
 		}
 		cout << endl;
 	}

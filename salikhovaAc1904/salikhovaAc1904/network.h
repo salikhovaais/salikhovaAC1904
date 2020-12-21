@@ -17,7 +17,7 @@ private:
 	set<int> idks;
 	set<int> idt;
 public:
-	void editnetwork(unordered_map<int, Pipeline>& Truboprovod);
+	void editnetwork(unordered_map<int, Pipeline>& pv);
 	void savefilenetwork(std::ofstream& fout);
 	int inputfilenetwork(std::ifstream& fin);
 	int** creatematrix(int n);

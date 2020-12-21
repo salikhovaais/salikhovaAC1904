@@ -174,6 +174,7 @@ void PrintMenu()
 		<< "9. delete pipeline or KC " << endl
 		<< "10. connect  KC with  pipeline  " << endl
 		<< "11. topological sort" << endl
+		<< "12. save sorted network " << endl
 		<< "0. exit" << endl
 		<< "choose action" << endl;
 
@@ -192,7 +193,7 @@ int main()
 	{
 		PrintMenu();
 
-		switch (Getcorrectnumber(0, 11))
+		switch (Getcorrectnumber(0, 12))
 		{
 		case 1:
 		{
@@ -288,24 +289,7 @@ int main()
 			}
 			
 		
-			if (network.getidks().size() > 0 || network.getidt().size() > 0)
-			{
-				ofstream fout;
-				fout.open("gts.txt", ios::out);
-				if (fout.is_open())
-				{
-					fout << network.getidt().size() << endl;
-					fout << network.getidks().size() << endl;
-					network.savefilenetwork(fout);
-					fout.close();
-				}
-				break;
-			}
-			else
-			{
-				cout << "there is no network\n";
-				break;
-			}
+			
 		}
 			
 		case 7:
@@ -343,32 +327,7 @@ int main()
 				else cout << "file is not found\n";
 				fin.close();
 			}
-			ifstream fin2;
-			fin2.open("gts.txt", ios::in);
-			if (fin2.is_open())
-			{
-				int countidt;
-				int countidks;
-				fin2 >> countidt;
-				fin2 >> countidks;
-				if (countidt > 0)
-				{
-					for (int i = 0; i < countidt; i++)
-					{
-						int n = network.inputfilenetwork(fin2);
-						network.setidt(n);
-					}
-				}
-				if (countidks > 0)
-				{
-					for (int i = 0; i < countidks; i++)
-					{
-						int n = network.inputfilenetwork(fin2);
-						network.setidks(n);
-					}
-				}
-				fin2.close();
-			}
+			
 			break;
 		}
 			
@@ -435,13 +394,45 @@ int main()
 				int k = 1;
 				for (auto& i : sortedmatrix)
 				{
-					cout <<  k << "wich  ID :" << i << endl;
+					cout <<  k << " ID :" << i << endl;
 					k += 1;
 				}
 			}
 			else
 				cout << "there is cycle\n";
 			break;
+		}
+		case 12:
+		{
+			if (network.getidks().size() > 0 || network.getidt().size() > 0)
+			{
+				ofstream fout;
+				fout.open("gts.txt", ios::out);
+				if (fout.is_open())
+				{
+					sortedmatrix = network.tgtssort(pv);
+					if (sortedmatrix.size() > 0)
+					{
+						int k = 1;
+						for (auto& i : sortedmatrix)
+						{
+
+							fout << k << " ID :" << i << endl;
+							k += 1;
+						}
+
+					}
+					network.savefilenetwork(fout);
+					fout.close();
+				}
+				break;
+			}
+			else
+			{
+				cout << "there is no network\n";
+				break;
+			}
+
 		}
 		case 0:
 		{
