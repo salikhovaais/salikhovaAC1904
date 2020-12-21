@@ -22,7 +22,6 @@ bool SearchById(Pipeline& p, int param)
 	return p.getID() == param;
 }
 
-
 bool SearchByRepair(const Pipeline& p, int param)
 {
 	return p.remont == param-1;
@@ -133,22 +132,32 @@ void DelPipes(unordered_map<int, Pipeline>& pipes_p)
 	}
 }
 
-void DelKC(unordered_map <int, KC>& kc_k)
+void DelKC(unordered_map <int, KC>& kc_k, network& network, unordered_map<int, Pipeline>& pv)
 {
 	if (kc_k.size() != 0)
 	{
 		cout << "enter the ID of the KC you want to delete: ";
-		int t;
-		cin >> t;
-		if (kc_k.find(t) != kc_k.end())
-			kc_k.erase(t);
-		cout << "the KC is deleted";
+		int t=Getcorrectnumber(1,KC::GetidK());
+		network.deleteidks(t);
+		for (auto& n : pv)
+		{
+			if (n.second.getinputks() == t)
+				n.second.setinputks(0);
+		}
+		for (auto& n : pv)
+		{
+			if (n.second.getoutputks() == t)
+				n.second.setoutputks(0);
+		}
+	kc_k.erase(t);
+	cout << "the KC is deleted";
 	}
 	else
 	{
 		cout << "error\n";
 	}
 }
+
 
 void PrintMenu()
 {
@@ -163,6 +172,8 @@ void PrintMenu()
 		<< "7. load from file" << endl
 		<< "8. search by filter " << endl
 		<< "9. delete pipeline or KC " << endl
+		<< "10. connect  KC with  pipeline  " << endl
+		<< "11. topological sort" << endl
 		<< "0. exit" << endl
 		<< "choose action" << endl;
 
@@ -172,13 +183,16 @@ int main()
 {
 	unordered_map<int, Pipeline> pv;
 	unordered_map<int, KC> kv;
+	
+	network network;
+	vector<unsigned int> sortedmatrix;
 	KC k;
 	Pipeline p;
 	while (1)
 	{
 		PrintMenu();
 
-		switch (Getcorrectnumber(0, 9))
+		switch (Getcorrectnumber(0, 11))
 		{
 		case 1:
 		{
@@ -344,9 +358,32 @@ int main()
 		}
 		else
 		{
-			DelKC(kv);
+			DelKC(kv,network,pv);
 		}
 		break;
+		}
+		case 10:
+		{
+
+			network.editnetwork(pv);
+			break;
+
+		}
+		case 11:
+		{
+			sortedmatrix = network.tgtssort(pv);
+			if (sortedmatrix.size() > 0)
+			{
+				int k = 1;
+				for (auto& i : sortedmatrix)
+				{
+					cout << "top" << k << "--> id=" << i << endl;
+					k += 1;
+				}
+			}
+			else
+				cout << "cycle\n";
+			break;
 		}
 		case 0:
 		{
