@@ -8,23 +8,20 @@ class Pipeline
 private:
 	static int idP;
 	int ident;
-	unsigned int inputks = 0; // Компрессорная станция, от которой идёт труба
-	unsigned int outputks = 0; // Компрессорная станция, к которой идёт труба
+	unsigned int inputks = 0; 
+	unsigned int outputks = 0; 
 public:
-	int idin;
-	int idout;
-	int get_idin() const;
-	int get_idout() const;
+	
 	double length = 0;
 	double diametr = 0;
 	bool remont = false;
-	Pipeline();
 	static int GetidP();
-	void setinputks(unsigned int value); // Присваиваю номер компрессорной станции, от которой идёт труба
-	void setoutputks(unsigned int value);// Присваиваю номер компрессорной станции, к которой идёт труба
-	unsigned int getinputks(); // Возвращаю номер компрессорной станции, от которой идёт труба
-	unsigned int getoutputks(); // Возвращаю номер компрессорной станции, к которой идёт труба
-
+	void setinputks(unsigned int value); 
+	void setoutputks(unsigned int value);
+	unsigned int getinputks();
+	unsigned int getoutputks(); 
+	void savefilepipe(std::ofstream& fout); // Сохранение информации о трубе
+	void inputfilepipe(std::ifstream& fin);
 	void RedaktPipeline();
 	friend std::ostream& operator<<(std::ostream& out, const Pipeline& x);
 	friend std::istream& operator >>(std::istream& in, Pipeline& x);

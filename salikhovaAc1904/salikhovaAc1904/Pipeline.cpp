@@ -8,10 +8,7 @@ using namespace std;
 int Pipeline::idP = 0;
 
 
-Pipeline::Pipeline()
-{
-	ident = idP++;
-}
+
 int Pipeline::GetidP()
 {
 	return idP;
@@ -42,7 +39,7 @@ unsigned int Pipeline::getoutputks()
 
 istream& operator>>(istream& in, Pipeline& x) //создание pipiline
 {
-	
+	x.ident = ++Pipeline::idP;
 	std::cout << " enter the length(in m):\n";
 	x.length = Getcorrectnumber(0, 1000);
 	std::cout << "enter the diameter(in mm): ";
@@ -78,4 +75,23 @@ void Pipeline::RedaktPipeline()
 {
 	remont = !remont;
 	cout << "the pipe's status is changed";
+}
+void Pipeline::inputfilepipe(std::ifstream& fin) // Считывание информации о трубе
+{
+	fin >> ident;
+	fin >> inputks;
+	fin >> outputks;
+	fin >> length;
+	fin >> diametr;
+	fin >> remont;
+
+}
+void Pipeline::savefilepipe(std::ofstream& fout) // Сохранение информации о трубе
+{
+	fout << ident << endl;
+	fout << inputks << endl;
+	fout << outputks << endl;
+	fout << length << endl;
+	fout << diametr << endl;
+	fout << remont << endl;
 }

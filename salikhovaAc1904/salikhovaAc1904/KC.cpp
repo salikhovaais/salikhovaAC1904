@@ -7,12 +7,7 @@ using namespace std;
 
 int KC::idK = 0;//уникальна€ идентификаци€ станций
 static int idK;
-KC::KC()
-{
 
-	ident = idK++;
-
-}
 int KC::GetidK()
 {
 	return idK;
@@ -21,11 +16,11 @@ int KC::GetidK()
 int KC::getID() const
 {
 	return ident;
-
 }
 
 istream& operator>>(istream& in, KC& y) //создание KC
 {
+	y.ident = ++KC::idK;
 	std::cout << "type name kc \n";
 	cin.ignore();
 	getline(cin, y.name);
