@@ -10,6 +10,8 @@ private:
 	int ident;
 	unsigned int inputks = 0; 
 	unsigned int outputks = 0; 
+	int proizv;
+	
 public:
 	
 	double length = 0;
@@ -20,9 +22,11 @@ public:
 	void setoutputks(unsigned int value);
 	unsigned int getinputks();
 	unsigned int getoutputks(); 
-	void savefilepipe(std::ofstream& fout); // Сохранение информации о трубе
+	void savefilepipe(std::ofstream& fout); 
 	void inputfilepipe(std::ifstream& fin);
 	void RedaktPipeline();
+	bool getremont();
+	int getproizv();
 	friend std::ostream& operator<<(std::ostream& out, const Pipeline& x);
 	friend std::istream& operator >>(std::istream& in, Pipeline& x);
 	friend std::ofstream& operator << (std::ofstream& fout, const Pipeline& x);

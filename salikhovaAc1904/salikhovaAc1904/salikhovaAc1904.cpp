@@ -175,6 +175,8 @@ void PrintMenu()
 		<< "10. connect  KC with  pipeline  " << endl
 		<< "11. topological sort" << endl
 		<< "12. save sorted network " << endl
+		<< "13. find max potok " << endl
+		<< "14. find min pyt " << endl
 		<< "0. exit" << endl
 		<< "choose action" << endl;
 
@@ -193,7 +195,7 @@ int main()
 	{
 		PrintMenu();
 
-		switch (Getcorrectnumber(0, 12))
+		switch (Getcorrectnumber(0, 14))
 		{
 		case 1:
 		{
@@ -433,6 +435,20 @@ int main()
 				break;
 			}
 
+		}
+		case 13:
+		{
+			float max = network.maxpotok(pv, kv);
+			cout << "max potok: \n";
+			cout << max << endl;
+			break;
+		}
+		case 14:
+		{
+			float max = network.minpyt(pv, kv);
+			cout << "min pyt: \n";
+			cout << max << endl;
+			break;
 		}
 		case 0:
 		{

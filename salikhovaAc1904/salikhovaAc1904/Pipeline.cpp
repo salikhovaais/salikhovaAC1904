@@ -36,6 +36,12 @@ unsigned int Pipeline::getoutputks()
 {
 	return outputks;
 }
+int Pipeline::getproizv()
+{
+	return proizv;
+}
+
+
 
 istream& operator>>(istream& in, Pipeline& x) //создание pipiline
 {
@@ -45,6 +51,7 @@ istream& operator>>(istream& in, Pipeline& x) //создание pipiline
 	std::cout << "enter the diameter(in mm): ";
 	x.diametr = Getcorrectnumber(1, 1000);
 	(x.remont) ? cout << "the pipe is under repair\n" : cout << "the pipe works\n";
+	x.proizv = sqrt(pow(x.diametr, 5 / x.length)) * 10;
 	return in;
 }
 
@@ -55,6 +62,7 @@ ostream& operator <<(ostream& out, const Pipeline& x)
 	out << "the length: " << x.length << endl;
 	out << "the diametr: " << x.diametr << endl;
 	(x.remont) ? out << "pipeline is unworking\n" : out << " pipeline is working\n"; 
+	out << "capacity: " << x.proizv << endl; 
 	return out;
 }
 ifstream& operator>>(ifstream& fin, Pipeline& x)
@@ -69,12 +77,16 @@ ofstream& operator<<(std::ofstream& fout, const Pipeline& x)
 }
 std::string checkRemont(const Pipeline& p)
 {
-	return (p.remont) ? "Unworking \n\n" : "Working \n\n";
+	return (p.remont) ? "unworking \n\n" : "working \n\n";
 }
 void Pipeline::RedaktPipeline()
 {
 	remont = !remont;
 	cout << "the pipe's status is changed";
+}
+bool Pipeline::getremont() 
+{
+	return remont;
 }
 void Pipeline::inputfilepipe(std::ifstream& fin) // —читывание информации о трубе
 {

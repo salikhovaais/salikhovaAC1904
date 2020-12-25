@@ -11,6 +11,8 @@ private:
 	int ident;
 	static int idK;
 public:
+	float pometka = 0;
+	int pred;
 	static int GetidK();
 	std::string name;
 	int zeh = 0;; // кол-во цехов
